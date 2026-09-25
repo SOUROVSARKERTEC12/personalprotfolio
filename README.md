@@ -2,18 +2,21 @@
 
 # ⚡ Sourov Sarkar | Developer Portfolio & System Architecture Showcase
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-sourovsarkertec12.github.io-10b981?style=for-the-badge&logo=github&logoColor=white)](https://sourovsarkertec12.github.io)
 [![Next.js](https://img.shields.io/badge/Next.js-16.3-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Turbopack](https://img.shields.io/badge/Turbopack-Enabled-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://turbo.build/pack)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Deployed-22c55e?style=for-the-badge&logo=github&logoColor=white)](https://sourovsarkertec12.github.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 
 <p align="center">
   <strong>High-performance, developer-first personal portfolio showcasing scalable microservices, resilient API architecture, and modern full-stack engineering.</strong>
 </p>
 
 <p align="center">
+  <a href="https://sourovsarkertec12.github.io" target="_blank">
+    <img src="https://img.shields.io/badge/🌐_Visit_Live_Website-sourovsarkertec12.github.io-06b6d4?style=flat-square" alt="Live Website" />
+  </a>
   <a href="https://github.com/SOUROVSARKERTEC12" target="_blank">
     <img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white" alt="GitHub" />
   </a>
@@ -42,11 +45,16 @@
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-  - [Running Development Server](#running-development-server)
+  - [Development Server](#development-server)
   - [Production Build](#production-build)
+  - [GitHub Pages Export & Sync](#github-pages-export--sync)
   - [Code Quality & Linting](#code-quality--linting)
 - [Configuration & Data Customization](#-configuration--data-customization)
-- [Deployment](#-deployment)
+- [GitHub Pages Deployment Process](#-github-pages-deployment-process)
+  - [Architecture & Mechanics](#architecture--mechanics)
+  - [Step-by-Step Deployment](#step-by-step-deployment)
+  - [Repository Settings Configuration](#repository-settings-configuration)
+  - [Alternative: CI/CD via GitHub Actions](#alternative-cicd-via-github-actions)
 - [Contact & Connect](#-contact--connect)
 - [License](#-license)
 
@@ -54,7 +62,9 @@
 
 ## 🚀 Overview
 
-This repository hosts the official personal portfolio and engineering portfolio of **Sourov Sarkar**, Backend Developer at **Dhaka Post** and specialist in **Scalable Systems & API Architecture**.
+This repository hosts the official source code of the personal portfolio and engineering showcase for **Sourov Sarkar**, Backend Developer at **Dhaka Post** and specialist in **Scalable Systems & API Architecture**.
+
+Live Website: **[https://sourovsarkertec12.github.io](https://sourovsarkertec12.github.io)**
 
 Built with cutting-edge web technologies including **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **custom WebGL fluid dynamics**, this site is engineered for ultra-fast load times, flawless responsiveness, fluid user interactions, and clean separation of concerns.
 
@@ -64,14 +74,15 @@ Built with cutting-edge web technologies including **Next.js 16 (App Router)**, 
 
 ## ✨ Key Features
 
-- **⚡ Next.js 16 App Router & React 19:** Optimized with Turbopack, static page pre-rendering, and modern React 19 client components.
+- **⚡ Next.js 16 App Router & React 19:** Powered by Turbopack, static page generation (`output: "export"`), and optimized React 19 client components.
 - **🎨 Interactive WebGL Fluid Physics:** Integrated dynamic GPU-accelerated fluid simulation cursor (`SplashCursor`) with custom velocity and dissipation parameters.
 - **🌓 Dynamic Multi-Theme Engine:** Seamlessly switch between **Cyberpunk (`cyber`)**, **Dark**, and **Light** modes with persistent `localStorage` preference caching.
 - **💼 Real-World Engineering Timeline:** Detailed breakdown of enterprise backend work at **Dhaka Post** and **Fly Far Tech**, including architecture highlights, key metrics, and technology stacks.
 - **🧪 Interactive API & Project Showcase:** Live project cards featuring mock REST API endpoints, request payloads, response schemas, and direct links to GitHub repositories.
 - **📊 Granular Skills Matrix:** Categorized competencies across Core Backend, Relational & NoSQL Databases, System Security & RBAC, and DevOps Tooling with proficiency metrics.
 - **📄 Interactive Resume Modal & Download:** Built-in PDF resume viewer modal with one-click direct download.
-- **📱 Fully Responsive & Accessible:** Crafted with semantic HTML5 elements, fluid CSS variables, keyboard accessibility, and optimized typography powered by Vercel's **Geist** font.
+- **🏷️ Branded Developer Favicon:** Custom vector SVG and multi-resolution icons (`icon.svg`, `favicon.ico`, `apple-touch-icon.png`) matching the terminal brand identity.
+- **📱 Fully Responsive & Accessible:** Semantic HTML5 elements, fluid CSS custom properties, keyboard accessibility, and optimized typography powered by Vercel's **Geist** font.
 
 ---
 
@@ -117,13 +128,19 @@ A selection of featured projects highlighted in this portfolio:
 
 ```text
 personalprotfolio/
-├── public/                     # Static assets, resume PDF, and avatars
+├── public/                     # Static assets, favicon, and avatars
+│   ├── .nojekyll               # Bypasses Jekyll on GitHub Pages
+│   ├── apple-touch-icon.png    # iOS / Safari icon
 │   ├── avatar.png
+│   ├── favicon.ico             # Standard 32-bit multi-res icon
+│   ├── icon.svg                # Scalable vector icon
 │   └── sourov-sarkar-resume.pdf
 ├── src/
 │   ├── app/                    # Next.js App Router root
-│   │   ├── favicon.ico
+│   │   ├── apple-icon.png      # Next.js App Router apple icon
+│   │   ├── favicon.ico         # App Router favicon
 │   │   ├── globals.css         # Theme tokens, CSS reset, and utilities
+│   │   ├── icon.svg            # App Router SVG icon
 │   │   ├── layout.tsx          # Root layout with SEO metadata & theme loader
 │   │   └── page.tsx            # Main single-page portfolio layout
 │   ├── components/             # Reusable UI sections and components
@@ -142,7 +159,7 @@ personalprotfolio/
 │   └── data/
 │       └── portfolioData.ts    # Centralized source of truth for all content & data
 ├── eslint.config.mjs           # ESLint configuration
-├── next.config.ts              # Next.js configuration
+├── next.config.ts              # Next.js configuration (static export & base path)
 ├── package.json                # Project dependencies and script declarations
 └── tsconfig.json               # TypeScript compiler options
 ```
@@ -172,7 +189,7 @@ cd personalprotfolio
 npm install
 ```
 
-### Running Development Server
+### Development Server
 
 Start the local Next.js development server with Turbopack:
 
@@ -184,14 +201,19 @@ Open [http://localhost:3000](http://localhost:3000) in your web browser to view 
 
 ### Production Build
 
-To compile and verify the optimized production build:
+To compile the optimized static export:
 
 ```bash
-# Build the application
+# Build the application (exports to /out)
 npm run build
+```
 
-# Start the production server
-npm run start
+### GitHub Pages Export & Sync
+
+To build the static site and immediately sync the production build to your GitHub Pages repository (`../profile`):
+
+```bash
+npm run export:profile
 ```
 
 ### Code Quality & Linting
@@ -219,18 +241,136 @@ You can easily modify:
 
 ---
 
-## 🌐 Deployment
+## 🌐 GitHub Pages Deployment Process
 
-### Deploy to Vercel (Recommended)
+The portfolio is deployed and hosted on **GitHub Pages** at the root domain:
+👉 **`https://sourovsarkertec12.github.io`**
 
-The easiest way to deploy this portfolio is using [Vercel](https://vercel.com):
+### Architecture & Mechanics
 
-1. Push your repository to GitHub.
-2. Import the project into your Vercel Dashboard.
-3. Vercel will automatically detect **Next.js** and apply optimal build settings (`next build`).
-4. Click **Deploy**!
+1. **Static HTML Export**:
+   In [next.config.ts](next.config.ts), `output: "export"` compiles the entire Next.js App Router application into standalone HTML, CSS, JavaScript, and media assets inside the `out/` directory.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SOUROVSARKERTEC12/personalprotfolio)
+2. **Root Domain Routing**:
+   The `basePath` is configured as root `""`, enabling direct serving from `https://sourovsarkertec12.github.io` without unnecessary subfolder paths.
+
+3. **Jekyll Processing Bypass (`.nojekyll`)**:
+   GitHub Pages runs Jekyll by default, which ignores folders beginning with underscores (such as Next.js's `_next/` bundle directory). The [public/.nojekyll](public/.nojekyll) file ensures GitHub Pages serves all static JavaScript, CSS, and media bundles without 404 errors.
+
+---
+
+### Step-by-Step Deployment
+
+#### Step 1: Export and Sync Build
+In the `personalprotfolio` directory, run the built-in sync command:
+
+```bash
+npm run export:profile
+```
+
+This script:
+1. Runs `next build` with Turbopack to create a production-optimized static export.
+2. Uses `rsync` to mirror the compiled files into your deployment repository (`../profile`) while preserving the `.git` version history.
+
+#### Step 2: Push to GitHub
+Navigate to your GitHub Pages deployment repository and push the latest build:
+
+```bash
+# Navigate to the deployment repo
+cd ../profile
+
+# Stage all files (HTML, _next bundles, and assets)
+git add .
+
+# Commit changes
+git commit -m "Deploy updated portfolio to GitHub Pages"
+
+# Push to your GitHub Pages branch
+git push origin master
+```
+
+---
+
+### Repository Settings Configuration
+
+To host your portfolio at the root address (`https://sourovsarkertec12.github.io`):
+
+1. **Repository Name**:
+   - In GitHub, go to your repository **Settings** ➔ **General** ➔ **Repository name**.
+   - Rename the repository to:
+     ```text
+     sourovsarkertec12.github.io
+     ```
+   *(GitHub Pages reserves `<username>.github.io` for root domain hosting).*
+
+2. **GitHub Pages Source**:
+   - In your repository, go to **Settings** ➔ **Pages**.
+   - **Source**: Select `Deploy from a branch`.
+   - **Branch**: Select `master` (or `main`) and folder `/ (root)`.
+   - Ensure **Enforce HTTPS** is checked.
+   - Click **Save**.
+
+Your portfolio will be live at:
+🌐 **`https://sourovsarkertec12.github.io`**
+
+---
+
+### Alternative: CI/CD via GitHub Actions
+
+If you prefer automated deployments directly from source code on push, you can add `.github/workflows/deploy.yml`:
+
+```yaml
+name: Deploy Next.js to GitHub Pages
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Static Export
+        run: npm run build
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
 
 ---
 
@@ -246,6 +386,7 @@ Feel free to connect or reach out for opportunities, collaborations, or technica
 - **🔗 LinkedIn:** [linkedin.com/in/sourovsarkerbd](https://linkedin.com/in/sourovsarkerbd)
 - **💻 GitHub:** [@SOUROVSARKERTEC12](https://github.com/SOUROVSARKERTEC12)
 - **📚 Stack Overflow:** [sourov-sarkar](https://stackoverflow.com/users/9541123/sourov-sarkar)
+- **🌐 Website:** [https://sourovsarkertec12.github.io](https://sourovsarkertec12.github.io)
 
 ---
 
