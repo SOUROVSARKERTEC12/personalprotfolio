@@ -84,7 +84,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <a
-              href="/sourov-sarkar-resume.pdf"
+              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
               download="Sourov_Sarkar_Backend_Developer_Resume.pdf"
               className="btn-primary"
               style={{
@@ -163,7 +163,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         >
           <span>Email: {PORTFOLIO_DATA.personal.email}</span>
           <a
-            href="/sourov-sarkar-resume.pdf"
+            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--accent-primary)", display: "flex", alignItems: "center", gap: "0.3rem" }}

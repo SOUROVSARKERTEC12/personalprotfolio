@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "export:profile": "next build && rsync -av --delete --exclude '.git' out/ /Users/BBMLDP-40190/DP-Project/frontend/profile/"
   },
   "dependencies": {
     "lucide-react": "^1.48.0",
