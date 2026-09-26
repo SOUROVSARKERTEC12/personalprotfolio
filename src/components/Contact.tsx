@@ -65,7 +65,7 @@ export default function Contact() {
           <div
             className="glass-card"
             style={{
-              padding: "2.25rem",
+              padding: "clamp(1rem, 3vw, 2.25rem)",
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
@@ -73,6 +73,8 @@ export default function Contact() {
               backgroundColor: "var(--bg-card)",
               border: "1px solid var(--border-subtle)",
               borderRadius: "var(--radius-md)",
+              minWidth: 0,
+              width: "100%",
             }}
           >
             {/* Header */}
@@ -103,7 +105,7 @@ export default function Contact() {
             </div>
 
             {/* Direct Contact Items List */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", minWidth: 0 }}>
               
               {/* Email Redirect Item */}
               <a
@@ -113,13 +115,14 @@ export default function Contact() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "1rem 1.25rem",
+                  padding: "0.85rem clamp(0.6rem, 2vw, 1.25rem)",
                   borderRadius: "var(--radius-sm)",
                   backgroundColor: "var(--bg-secondary)",
                   border: "1px solid var(--border-subtle)",
                   textDecoration: "none",
                   transition: "all 0.2s ease",
-                  gap: "0.75rem",
+                  gap: "0.6rem",
+                  minWidth: 0,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "var(--border-accent)";
@@ -130,11 +133,11 @@ export default function Contact() {
                   e.currentTarget.style.transform = "none";
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem", minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", minWidth: 0, flex: 1, overflow: "hidden" }}>
                   <div
                     style={{
-                      width: "42px",
-                      height: "42px",
+                      width: "38px",
+                      height: "38px",
                       borderRadius: "10px",
                       background: "rgba(6, 182, 212, 0.12)",
                       border: "1px solid var(--border-accent)",
@@ -145,13 +148,13 @@ export default function Contact() {
                       flexShrink: 0,
                     }}
                   >
-                    <Mail size={20} />
+                    <Mail size={18} />
                   </div>
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                  <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+                    <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
                       Direct Email
                     </div>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {PORTFOLIO_DATA.personal.email}
                     </div>
                   </div>
@@ -168,7 +171,7 @@ export default function Contact() {
                     flexShrink: 0,
                   }}
                 >
-                  <span>Send Email</span>
+                  <span className="contact-action-label">Send Email</span>
                   <ExternalLink size={14} />
                 </div>
               </a>
@@ -183,13 +186,14 @@ export default function Contact() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "1rem 1.25rem",
+                  padding: "0.85rem clamp(0.6rem, 2vw, 1.25rem)",
                   borderRadius: "var(--radius-sm)",
                   backgroundColor: "var(--bg-secondary)",
                   border: "1px solid var(--border-subtle)",
                   textDecoration: "none",
                   transition: "all 0.2s ease",
-                  gap: "0.75rem",
+                  gap: "0.6rem",
+                  minWidth: 0,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = "rgba(16, 185, 129, 0.4)";
@@ -200,11 +204,11 @@ export default function Contact() {
                   e.currentTarget.style.transform = "none";
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "1rem", minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", minWidth: 0, flex: 1, overflow: "hidden" }}>
                   <div
                     style={{
-                      width: "42px",
-                      height: "42px",
+                      width: "38px",
+                      height: "38px",
                       borderRadius: "10px",
                       background: "rgba(16, 185, 129, 0.12)",
                       border: "1px solid rgba(16, 185, 129, 0.35)",
@@ -215,13 +219,13 @@ export default function Contact() {
                       flexShrink: 0,
                     }}
                   >
-                    <Phone size={20} />
+                    <Phone size={18} />
                   </div>
-                  <div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                  <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+                    <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
                       WhatsApp / Phone
                     </div>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                    <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {PORTFOLIO_DATA.personal.phone}
                     </div>
                   </div>
@@ -238,7 +242,7 @@ export default function Contact() {
                     flexShrink: 0,
                   }}
                 >
-                  <span>Chat on WhatsApp</span>
+                  <span className="contact-action-label">Chat on WhatsApp</span>
                   <ExternalLink size={14} />
                 </div>
               </a>
@@ -248,17 +252,18 @@ export default function Contact() {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "1rem",
-                  padding: "1rem 1.25rem",
+                  gap: "0.75rem",
+                  padding: "0.85rem clamp(0.6rem, 2vw, 1.25rem)",
                   borderRadius: "var(--radius-sm)",
                   backgroundColor: "var(--bg-secondary)",
                   border: "1px solid var(--border-subtle)",
+                  minWidth: 0,
                 }}
               >
                 <div
                   style={{
-                    width: "42px",
-                    height: "42px",
+                    width: "38px",
+                    height: "38px",
                     borderRadius: "10px",
                     background: "rgba(99, 102, 241, 0.12)",
                     border: "1px solid rgba(99, 102, 241, 0.35)",
@@ -269,13 +274,13 @@ export default function Contact() {
                     flexShrink: 0,
                   }}
                 >
-                  <MapPin size={20} />
+                  <MapPin size={18} />
                 </div>
-                <div>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
+                  <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
                     Location
                   </div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     {PORTFOLIO_DATA.personal.location}
                   </div>
                 </div>
@@ -284,17 +289,17 @@ export default function Contact() {
             </div>
 
             {/* Social Links inside the same card */}
-            <div style={{ paddingTop: "0.5rem" }}>
+            <div style={{ paddingTop: "0.5rem", minWidth: 0 }}>
               <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, marginBottom: "0.75rem" }}>
                 Social & Developer Profiles
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.75rem" }}>
+              <div className="contact-social-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.5rem" }}>
                 <a
                   href={PORTFOLIO_DATA.personal.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: "0.85rem 0.5rem",
+                    padding: "0.75rem 0.35rem",
                     borderRadius: "var(--radius-sm)",
                     backgroundColor: "var(--bg-secondary)",
                     border: "1px solid var(--border-subtle)",
@@ -302,10 +307,12 @@ export default function Contact() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "0.4rem",
+                    gap: "0.35rem",
                     color: "var(--text-primary)",
                     textDecoration: "none",
                     transition: "all 0.2s ease",
+                    minWidth: 0,
+                    overflow: "hidden",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "var(--accent-primary)";
@@ -318,8 +325,8 @@ export default function Contact() {
                     e.currentTarget.style.transform = "none";
                   }}
                 >
-                  <Linkedin size={20} style={{ color: "var(--accent-primary)" }} />
-                  <span style={{ fontSize: "0.78rem", fontWeight: 600 }}>LinkedIn</span>
+                  <Linkedin size={18} style={{ color: "var(--accent-primary)", flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.72rem", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>LinkedIn</span>
                 </a>
 
                 <a
@@ -327,7 +334,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: "0.85rem 0.5rem",
+                    padding: "0.75rem 0.35rem",
                     borderRadius: "var(--radius-sm)",
                     backgroundColor: "var(--bg-secondary)",
                     border: "1px solid var(--border-subtle)",
@@ -335,10 +342,12 @@ export default function Contact() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "0.4rem",
+                    gap: "0.35rem",
                     color: "var(--text-primary)",
                     textDecoration: "none",
                     transition: "all 0.2s ease",
+                    minWidth: 0,
+                    overflow: "hidden",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "var(--accent-secondary)";
@@ -351,8 +360,8 @@ export default function Contact() {
                     e.currentTarget.style.transform = "none";
                   }}
                 >
-                  <Github size={20} style={{ color: "var(--accent-secondary)" }} />
-                  <span style={{ fontSize: "0.78rem", fontWeight: 600 }}>GitHub</span>
+                  <Github size={18} style={{ color: "var(--accent-secondary)", flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.72rem", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>GitHub</span>
                 </a>
 
                 <a
@@ -360,7 +369,7 @@ export default function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    padding: "0.85rem 0.5rem",
+                    padding: "0.75rem 0.35rem",
                     borderRadius: "var(--radius-sm)",
                     backgroundColor: "var(--bg-secondary)",
                     border: "1px solid var(--border-subtle)",
@@ -368,10 +377,12 @@ export default function Contact() {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "0.4rem",
+                    gap: "0.35rem",
                     color: "var(--text-primary)",
                     textDecoration: "none",
                     transition: "all 0.2s ease",
+                    minWidth: 0,
+                    overflow: "hidden",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "var(--accent-warning)";
@@ -384,8 +395,8 @@ export default function Contact() {
                     e.currentTarget.style.transform = "none";
                   }}
                 >
-                  <StackOverflow size={20} style={{ color: "var(--accent-warning)" }} />
-                  <span style={{ fontSize: "0.78rem", fontWeight: 600 }}>Stack Overflow</span>
+                  <StackOverflow size={18} style={{ color: "var(--accent-warning)", flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.72rem", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>StackOverflow</span>
                 </a>
               </div>
             </div>
@@ -393,7 +404,7 @@ export default function Contact() {
           </div>
 
           {/* Right Column: Interactive Contact Form */}
-          <div className="glass-card" style={{ padding: "2.25rem" }}>
+          <div className="glass-card" style={{ padding: "clamp(1rem, 3vw, 2.25rem)", minWidth: 0, width: "100%" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.5rem" }}>
               <div
                 style={{
@@ -590,6 +601,14 @@ export default function Contact() {
         }
         @media (max-width: 640px) {
           .form-row {
+            grid-template-columns: 1fr !important;
+          }
+          .contact-action-label {
+            display: none !important;
+          }
+        }
+        @media (max-width: 360px) {
+          .contact-social-grid {
             grid-template-columns: 1fr !important;
           }
         }

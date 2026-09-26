@@ -23,13 +23,13 @@ export default function Projects() {
         </div>
 
         {/* Projects Cards Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "1.75rem" }}>
           {PORTFOLIO_DATA.projects.map((proj) => (
             <div
               key={proj.id}
               className="glass-card"
               style={{
-                padding: "2rem",
+                padding: "clamp(1.25rem, 3.5vw, 2rem)",
                 display: "flex",
                 flexDirection: "column",
                 position: "relative",

@@ -60,7 +60,7 @@ export default function About() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem", marginBottom: "3.5rem" }} className="about-bio-grid">
           
           {/* Main Bio Card */}
-          <div className="glass-card" style={{ padding: "2.25rem" }}>
+          <div className="glass-card" style={{ padding: "clamp(1.25rem, 3.5vw, 2.25rem)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.25rem" }}>
               <div
                 style={{
@@ -122,16 +122,17 @@ export default function About() {
         </div>
 
         {/* 4 Pillars of Architecture */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))", gap: "1.5rem" }}>
           {pillars.map((pillar, idx) => (
             <div
               key={idx}
               className="glass-card"
               style={{
-                padding: "1.75rem",
+                padding: "clamp(1.25rem, 3vw, 1.75rem)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
+                minWidth: 0,
               }}
             >
               <div
@@ -144,12 +145,13 @@ export default function About() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  flexShrink: 0,
                 }}
               >
                 {pillar.icon}
               </div>
 
-              <div>
+              <div style={{ minWidth: 0 }}>
                 <h4 style={{ fontSize: "1.15rem", fontWeight: 700, marginBottom: "0.5rem" }}>{pillar.title}</h4>
                 <p style={{ fontSize: "0.92rem", color: "var(--text-secondary)", lineHeight: "1.6" }}>
                   {pillar.description}
@@ -163,7 +165,7 @@ export default function About() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))",
             gap: "1.25rem",
             marginTop: "3rem",
           }}
@@ -173,23 +175,27 @@ export default function About() {
               key={idx}
               className="glass-card"
               style={{
-                padding: "1.5rem",
+                padding: "1.25rem 0.75rem",
                 textAlign: "center",
                 background: "var(--bg-card)",
+                minWidth: 0,
+                overflow: "hidden",
               }}
             >
               <div
                 style={{
-                  fontSize: "2rem",
+                  fontSize: "clamp(1.25rem, 3.5vw, 1.85rem)",
                   fontWeight: 800,
                   fontFamily: "var(--font-mono)",
                   marginBottom: "0.3rem",
+                  wordBreak: "break-word",
+                  lineHeight: "1.2",
                 }}
                 className="gradient-text"
               >
                 {stat.value}
               </div>
-              <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 500 }}>
+              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)", fontWeight: 500 }}>
                 {stat.label}
               </div>
             </div>

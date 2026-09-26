@@ -28,7 +28,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "1.5rem",
+        padding: "clamp(0.5rem, 2.5vw, 1.5rem)",
       }}
       onClick={onClose}
     >
@@ -54,12 +54,13 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "1rem 1.5rem",
+            padding: "0.75rem clamp(0.75rem, 2.5vw, 1.5rem)",
             borderBottom: "1px solid var(--border-subtle)",
             backgroundColor: "var(--bg-card)",
+            gap: "0.5rem",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", minWidth: 0 }}>
             <div
               style={{
                 width: "36px",
@@ -70,30 +71,33 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 alignItems: "center",
                 justifyContent: "center",
                 color: "#ffffff",
+                flexShrink: 0,
               }}
             >
               <FileText size={18} />
             </div>
-            <div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700 }}>Sourov Sarkar - Resume</h3>
-              <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
-                Backend Developer • PDF Document
+            <div style={{ minWidth: 0 }}>
+              <h3 style={{ fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                Sourov Sarkar - Resume
+              </h3>
+              <p style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                Backend Developer • PDF
               </p>
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
             <a
               href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
               download="Sourov_Sarkar_Backend_Developer_Resume.pdf"
               className="btn-primary"
               style={{
-                padding: "0.5rem 1rem",
-                fontSize: "0.85rem",
+                padding: "0.45rem 0.85rem",
+                fontSize: "0.82rem",
               }}
             >
               <Download size={15} />
-              <span>Download PDF</span>
+              <span className="resume-download-text">Download PDF</span>
             </a>
 
             <button
@@ -108,6 +112,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
                 justifyContent: "center",
                 color: "var(--text-muted)",
                 backgroundColor: "var(--bg-card)",
+                flexShrink: 0,
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--text-primary)")}
               onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
@@ -173,6 +178,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
           </a>
         </div>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 540px) {
+          .resume-download-text {
+            display: none !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

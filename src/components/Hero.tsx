@@ -109,7 +109,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "3.5rem", alignItems: "center" }} className="hero-grid">
 
           {/* Left Column: Introduction & Pitch */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", minWidth: 0 }}>
 
             {/* Status Pill */}
             {/* <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.8rem" }}>
@@ -145,7 +145,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
               </div>
               <h1
                 style={{
-                  fontSize: "clamp(2.4rem, 5vw, 3.8rem)",
+                  fontSize: "clamp(1.85rem, 5vw, 3.8rem)",
                   fontWeight: 800,
                   lineHeight: 1.15,
                   letterSpacing: "-0.035em",
@@ -284,7 +284,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
           </div>
 
           {/* Right Column: Live Interactive Backend Terminal */}
-          <div style={{ width: "100%", maxWidth: "520px", justifySelf: "end", margin: "0 auto" }}>
+          <div style={{ width: "100%", maxWidth: "520px", justifySelf: "end", margin: "0 auto", minWidth: 0 }}>
             {/* Interactive Backend REST Playground / Terminal */}
             <div
               className="glass-card"
@@ -299,6 +299,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 height: "420px",
                 display: "flex",
                 flexDirection: "column",
+                minWidth: 0,
               }}
             >
               {/* Terminal Window Header */}
@@ -311,18 +312,20 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   backgroundColor: "var(--code-header)",
                   borderBottom: "1px solid var(--border-subtle)",
                   flexShrink: 0,
+                  gap: "0.5rem",
+                  minWidth: 0,
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.45rem" }}>
-                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#ef4444", display: "inline-block" }} />
-                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#f59e0b", display: "inline-block" }} />
-                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#10b981", display: "inline-block" }} />
-                  <span style={{ marginLeft: "0.5rem", fontSize: "0.78rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.45rem", minWidth: 0, overflow: "hidden" }}>
+                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#ef4444", display: "inline-block", flexShrink: 0 }} />
+                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#f59e0b", display: "inline-block", flexShrink: 0 }} />
+                  <span style={{ width: "11px", height: "11px", borderRadius: "50%", backgroundColor: "#10b981", display: "inline-block", flexShrink: 0 }} />
+                  <span className="terminal-host" style={{ marginLeft: "0.5rem", fontSize: "0.78rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                     api.sourov.dev:4000
                   </span>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flexShrink: 0 }}>
                   <button
                     type="button"
                     onClick={copyCurl}
@@ -333,13 +336,13 @@ export default function Hero({ onOpenResume }: HeroProps) {
                       gap: "0.3rem",
                       fontSize: "0.72rem",
                       color: copiedCurl ? "var(--accent-success)" : "var(--text-muted)",
-                      padding: "0.25rem 0.5rem",
+                      padding: "0.25rem 0.45rem",
                       borderRadius: "4px",
                       background: "rgba(255, 255, 255, 0.05)",
                     }}
                   >
                     {copiedCurl ? <Check size={12} /> : <Copy size={12} />}
-                    <span>{copiedCurl ? "Copied" : "cURL"}</span>
+                    <span className="terminal-action-text">{copiedCurl ? "Copied" : "cURL"}</span>
                   </button>
 
                   <button
@@ -352,26 +355,29 @@ export default function Hero({ onOpenResume }: HeroProps) {
                       gap: "0.3rem",
                       fontSize: "0.72rem",
                       color: "#ffffff",
-                      padding: "0.25rem 0.6rem",
+                      padding: "0.25rem 0.55rem",
                       borderRadius: "4px",
                       background: "var(--accent-primary)",
                       fontWeight: 600,
                     }}
                   >
                     {isRunning ? <RotateCw size={12} className="animate-spin" /> : <Play size={12} fill="#fff" />}
-                    <span>{isRunning ? "Executing..." : "Execute"}</span>
+                    <span>{isRunning ? "Running" : "Execute"}</span>
                   </button>
                 </div>
               </div>
 
               {/* Endpoint Tabs */}
               <div
+                className="terminal-tabs"
                 style={{
                   display: "flex",
                   borderBottom: "1px solid var(--border-subtle)",
                   backgroundColor: "rgba(0,0,0,0.2)",
                   overflowX: "auto",
                   flexShrink: 0,
+                  width: "100%",
+                  minWidth: 0,
                 }}
               >
                 {(
@@ -388,7 +394,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                       type="button"
                       onClick={() => setSelectedEndpoint(tab.key)}
                       style={{
-                        padding: "0.55rem 0.9rem",
+                        padding: "0.55rem 0.85rem",
                         fontSize: "0.75rem",
                         fontFamily: "var(--font-mono)",
                         color: isActive ? "var(--accent-primary)" : "var(--text-muted)",
@@ -399,6 +405,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                         alignItems: "center",
                         gap: "0.4rem",
                         transition: "all 0.15s ease",
+                        flexShrink: 0,
                       }}
                     >
                       <span>{tab.label}</span>
@@ -409,37 +416,42 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
               {/* Terminal Content Body with Fixed Height & Vertical Scroll */}
               <div
+                className="hero-terminal-body"
                 style={{
-                  padding: "1.25rem 1.5rem",
+                  padding: "1rem 1.25rem",
                   flex: 1,
                   minHeight: 0,
+                  minWidth: 0,
                   overflowY: "auto",
+                  overflowX: "hidden",
                   display: "flex",
                   flexDirection: "column",
                   gap: "0.85rem",
                   scrollbarWidth: "thin",
                   scrollbarColor: "rgba(255, 255, 255, 0.2) transparent",
+                  width: "100%",
                 }}
               >
 
                 {/* Method & URL header line */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.5rem", flexShrink: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.4rem", flexShrink: 0, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontFamily: "var(--font-mono)", fontSize: "0.78rem", minWidth: 0, overflow: "hidden" }}>
                     <span
                       style={{
-                        padding: "0.15rem 0.45rem",
+                        padding: "0.15rem 0.4rem",
                         borderRadius: "4px",
                         fontWeight: 700,
                         backgroundColor: currentEndpoint.method === "GET" ? "rgba(16, 185, 129, 0.2)" : "rgba(245, 158, 11, 0.2)",
                         color: currentEndpoint.method === "GET" ? "var(--accent-success)" : "var(--accent-warning)",
+                        flexShrink: 0,
                       }}
                     >
                       {currentEndpoint.method}
                     </span>
-                    <span style={{ color: "var(--text-primary)" }}>{currentEndpoint.url}</span>
+                    <span style={{ color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentEndpoint.url}</span>
                   </div>
 
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", fontFamily: "var(--font-mono)", fontSize: "0.72rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontFamily: "var(--font-mono)", fontSize: "0.72rem", flexShrink: 0 }}>
                     <span style={{ color: "var(--accent-success)", display: "flex", alignItems: "center", gap: "0.25rem" }}>
                       <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--accent-success)" }} />
                       HTTP {currentEndpoint.status} OK
@@ -450,30 +462,33 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
                 {/* Optional Request Payload preview for POST */}
                 {currentEndpoint.payload && (
-                  <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "0.2rem", flexShrink: 0 }}>
+                  <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "0.2rem", flexShrink: 0, minWidth: 0 }}>
                     <span style={{ color: "var(--accent-warning)" }}>{"// Request Body (Payload):"}</span>
-                    <pre style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "0.78rem", lineHeight: "1.5", overflowX: "auto" }}>
-                      {JSON.stringify(currentEndpoint.payload, null, 2)}
+                    <pre style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "0.76rem", lineHeight: "1.5", overflowX: "auto", maxWidth: "100%", minWidth: 0 }}>
+                      <code style={{ display: "block", minWidth: 0 }}>{JSON.stringify(currentEndpoint.payload, null, 2)}</code>
                     </pre>
                   </div>
                 )}
 
                 {/* Response Output */}
-                <div style={{ marginTop: "0.2rem" }}>
+                <div style={{ marginTop: "0.2rem", minWidth: 0, width: "100%", overflow: "hidden" }}>
                   <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginBottom: "0.4rem" }}>
                     <span style={{ color: "var(--terminal-green)" }}>{"// Server Response:"}</span>
                   </div>
                   <pre
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: "0.8rem",
+                      fontSize: "0.76rem",
                       color: "var(--text-primary)",
                       overflowX: "auto",
                       lineHeight: "1.55",
                       margin: 0,
+                      maxWidth: "100%",
+                      width: "100%",
+                      minWidth: 0,
                     }}
                   >
-                    <code>{JSON.stringify(currentEndpoint.response, null, 2)}</code>
+                    <code style={{ display: "block", minWidth: 0 }}>{JSON.stringify(currentEndpoint.response, null, 2)}</code>
                   </pre>
                 </div>
 
@@ -490,6 +505,27 @@ export default function Hero({ onOpenResume }: HeroProps) {
           .hero-grid {
             grid-template-columns: 1fr 520px !important;
           }
+        }
+        @media (max-width: 600px) {
+          .terminal-host {
+            display: none !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .terminal-action-text {
+            display: none !important;
+          }
+          .hero-terminal-body {
+            padding: 0.85rem 0.75rem !important;
+          }
+        }
+        .terminal-tabs {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .terminal-tabs::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </section>

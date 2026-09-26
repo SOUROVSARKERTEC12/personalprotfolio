@@ -28,18 +28,19 @@ export default function Interests() {
         </div>
 
         {/* Interests Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.75rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.75rem" }}>
           {PORTFOLIO_DATA.interests.map((interest, idx) => (
             <div
               key={idx}
               className="glass-card"
               style={{
-                padding: "2rem",
+                padding: "clamp(1.25rem, 3.5vw, 2rem)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1rem",
                 position: "relative",
                 overflow: "hidden",
+                minWidth: 0,
               }}
             >
               <div

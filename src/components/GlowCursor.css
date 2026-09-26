@@ -8,8 +8,8 @@
 .glow-cursor--global {
   position: fixed !important;
   inset: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
+  width: 100% !important;
+  height: 100% !important;
   pointer-events: none !important;
   z-index: 50 !important;
   overflow: hidden !important;

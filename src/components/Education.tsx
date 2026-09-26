@@ -25,7 +25,7 @@ export default function Education() {
 
         {/* Education Card */}
         <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-          <div className="glass-card" style={{ padding: "2.5rem", position: "relative" }}>
+          <div className="glass-card" style={{ padding: "clamp(1.25rem, 4vw, 2.5rem)", position: "relative" }}>
             
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem", marginBottom: "1.25rem" }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: "1.25rem" }}>
@@ -83,7 +83,7 @@ export default function Education() {
                 Key Computer Science Principles Mastered:
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "0.75rem" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: "0.75rem" }}>
                 {edu.coreFocus.map((focus, idx) => (
                   <div key={idx} style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                     <CheckCircle2 size={16} style={{ color: "var(--accent-success)", flexShrink: 0 }} />

@@ -150,6 +150,8 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           top: 0,
           left: 0,
           right: 0,
+          width: "100%",
+          maxWidth: "100%",
           zIndex: 100,
           transition: "all 0.3s ease",
           backgroundColor: scrolled ? "var(--bg-glass)" : "transparent",
@@ -166,6 +168,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             alignItems: "center",
             justifyContent: "space-between",
             height: "74px",
+            width: "100%",
           }}
         >
           {/* Logo / Brand */}
@@ -199,7 +202,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                 <span>Sourov</span>
                 <span style={{ color: "var(--accent-primary)" }}>.dev</span>
               </div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "-2px" }}>
+              <div className="nav-brand-subtitle" style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "-2px" }}>
                 Backend Engineer
               </div>
             </div>
@@ -253,7 +256,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           </nav>
 
           {/* Right Action Buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div className="navbar-actions" style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
             {/* Theme Picker Dropdown Toggle */}
             <div id="theme-switcher-container" style={{ position: "relative" }}>
               <button
@@ -296,6 +299,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                     top: "120%",
                     right: 0,
                     width: "210px",
+                    maxWidth: "calc(100vw - 2rem)",
                     backgroundColor: "var(--bg-secondary)",
                     border: "1px solid var(--border-accent)",
                     borderRadius: "var(--radius-md)",
@@ -426,6 +430,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                     top: "120%",
                     right: 0,
                     width: "230px",
+                    maxWidth: "calc(100vw - 2rem)",
                     backgroundColor: "var(--bg-secondary)",
                     border: "1px solid var(--border-accent)",
                     borderRadius: "var(--radius-md)",
@@ -500,7 +505,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               type="button"
               id="navbar-resume-button"
               onClick={onOpenResume}
-              className="btn-primary"
+              className="btn-primary navbar-resume-btn"
               style={{
                 padding: "0.55rem 1.1rem",
                 fontSize: "0.85rem",
@@ -547,12 +552,15 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             bottom: 0,
             backgroundColor: "var(--bg-primary)",
             zIndex: 99,
-            padding: "2rem 1.5rem",
+            padding: "1.75rem 1.25rem",
             display: "flex",
             flexDirection: "column",
             gap: "1.5rem",
             backdropFilter: "blur(20px)",
             borderTop: "1px solid var(--border-subtle)",
+            overflowY: "auto",
+            overscrollBehavior: "contain",
+            WebkitOverflowScrolling: "touch",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
@@ -627,6 +635,19 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           }
           .resume-btn-text {
             display: none;
+          }
+        }
+        @media (max-width: 640px) {
+          .navbar-resume-btn {
+            display: none !important;
+          }
+          .navbar-actions {
+            gap: 0.45rem !important;
+          }
+        }
+        @media (max-width: 380px) {
+          .nav-brand-subtitle {
+            display: none !important;
           }
         }
       `}</style>

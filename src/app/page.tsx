@@ -17,12 +17,12 @@ export default function Home() {
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
       {/* Sticky Navigation with Theme Switcher */}
       <Navbar onOpenResume={() => setResumeModalOpen(true)} />
 
       {/* Main Single-Page Sections */}
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
         <Hero onOpenResume={() => setResumeModalOpen(true)} />
         <About />
         <Experience />

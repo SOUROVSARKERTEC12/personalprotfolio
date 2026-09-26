@@ -154,9 +154,9 @@ export default function Skills() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "0.4rem",
-                    padding: "0.45rem 1rem",
+                    padding: "0.4rem clamp(0.65rem, 2vw, 1rem)",
                     borderRadius: "var(--radius-full)",
-                    fontSize: "0.84rem",
+                    fontSize: "clamp(0.76rem, 2.2vw, 0.84rem)",
                     fontWeight: 600,
                     backgroundColor: isActive ? "var(--accent-primary)" : "var(--bg-card)",
                     color: isActive ? "#ffffff" : "var(--text-secondary)",
@@ -188,7 +188,7 @@ export default function Skills() {
               key={category.name}
               className="glass-card"
               style={{
-                padding: "1.5rem",
+                padding: "clamp(1rem, 3vw, 1.5rem)",
                 display: "flex",
                 flexDirection: "column",
                 gap: "1.1rem",
@@ -242,7 +242,7 @@ export default function Skills() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(105px, 1fr))",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 96px), 1fr))",
                   gap: "0.75rem",
                 }}
               >
