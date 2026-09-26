@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Terminal, Download, Palette, Menu, X, Check, FileText } from "lucide-react";
+import React, { useState, useEffect, useSyncExternalStore } from "react";
+import { Terminal, Download, Palette, Menu, X, Check, FileText, Sparkles } from "lucide-react";
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -14,12 +14,80 @@ const THEMES = [
   { id: "light", label: "Polar Light", color: "#2563eb" },
 ];
 
+const CURSOR_EFFECTS = [
+  { id: "glow", label: "Glow Trail", badge: "React Bits (Default)", icon: "✨" },
+  { id: "splash", label: "Fluid Splash", badge: "WebGL Fluid", icon: "🌊" },
+  { id: "none", label: "Disabled", badge: "Clean Cursor", icon: "🚫" },
+];
+
+function subscribeCursor(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("sourov_cursor_change", callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    window.removeEventListener("sourov_cursor_change", callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+function getCursorSnapshot(): string {
+  try {
+    return localStorage.getItem("sourov_cursor_effect") || "glow";
+  } catch {
+    return "glow";
+  }
+}
+
+function getCursorServerSnapshot(): string {
+  return "glow";
+}
+
+function subscribeTheme(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.type === "attributes" && m.attributeName === "data-theme") {
+        callback();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  return () => observer.disconnect();
+}
+
+function getThemeSnapshot(): string {
+  try {
+    return document.documentElement.getAttribute("data-theme") || localStorage.getItem("sourov_theme") || "cyber";
+  } catch {
+    return "cyber";
+  }
+}
+
+function getThemeServerSnapshot(): string {
+  return "cyber";
+}
+
 export default function Navbar({ onOpenResume }: NavbarProps) {
   const [activeSection, setActiveSection] = useState("hero");
-  const [currentTheme, setCurrentTheme] = useState("cyber");
+  const currentTheme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
+  const currentCursorEffect = useSyncExternalStore(subscribeCursor, getCursorSnapshot, getCursorServerSnapshot);
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [showCursorPicker, setShowCursorPicker] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("#theme-switcher-container") && !target.closest("#cursor-effect-container")) {
+        setShowThemePicker(false);
+        setShowCursorPicker(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,10 +114,23 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
   }, []);
 
   const changeTheme = (themeId: string) => {
-    setCurrentTheme(themeId);
     document.documentElement.setAttribute("data-theme", themeId);
-    localStorage.setItem("sourov_theme", themeId);
+    try {
+      localStorage.setItem("sourov_theme", themeId);
+    } catch {
+      // ignore
+    }
     setShowThemePicker(false);
+  };
+
+  const changeCursorEffect = (effectId: string) => {
+    try {
+      localStorage.setItem("sourov_cursor_effect", effectId);
+      window.dispatchEvent(new CustomEvent("sourov_cursor_change", { detail: effectId }));
+    } catch {
+      // ignore
+    }
+    setShowCursorPicker(false);
   };
 
   const navLinks = [
@@ -174,12 +255,15 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           {/* Right Action Buttons */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             {/* Theme Picker Dropdown Toggle */}
-            <div style={{ position: "relative" }}>
+            <div id="theme-switcher-container" style={{ position: "relative" }}>
               <button
                 type="button"
                 id="theme-switcher-button"
                 aria-label="Change theme"
-                onClick={() => setShowThemePicker(!showThemePicker)}
+                onClick={() => {
+                  setShowThemePicker(!showThemePicker);
+                  setShowCursorPicker(false);
+                }}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -277,6 +361,133 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                           <span>{theme.label}</span>
                         </div>
                         {isSelected && <Check size={15} style={{ color: "var(--accent-primary)" }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Cursor Effect Picker Dropdown Toggle */}
+            <div id="cursor-effect-container" style={{ position: "relative" }}>
+              <button
+                type="button"
+                id="cursor-effect-button"
+                aria-label="Change cursor effect"
+                title="Cursor Effects: Glow Trail / Fluid Splash / Off"
+                onClick={() => {
+                  setShowCursorPicker(!showCursorPicker);
+                  setShowThemePicker(false);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "10px",
+                  backgroundColor: "var(--bg-card)",
+                  border: "1px solid var(--border-subtle)",
+                  color: currentCursorEffect === "glow" ? "var(--accent-primary)" : "var(--text-secondary)",
+                  transition: "all 0.2s ease",
+                  position: "relative",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--accent-primary)";
+                  e.currentTarget.style.boxShadow = "var(--border-glow)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-subtle)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <Sparkles size={18} />
+                {currentCursorEffect === "glow" && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "6px",
+                      right: "6px",
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      backgroundColor: "var(--accent-primary)",
+                      boxShadow: "0 0 6px var(--accent-primary)",
+                    }}
+                  />
+                )}
+              </button>
+
+              {/* Cursor Effect Dropdown Panel */}
+              {showCursorPicker && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "120%",
+                    right: 0,
+                    width: "230px",
+                    backgroundColor: "var(--bg-secondary)",
+                    border: "1px solid var(--border-accent)",
+                    borderRadius: "var(--radius-md)",
+                    boxShadow: "var(--shadow-lg)",
+                    padding: "0.6rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.4rem",
+                    zIndex: 110,
+                    backdropFilter: "blur(20px)",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      color: "var(--text-muted)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      padding: "0.3rem 0.6rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span>Cursor Effect</span>
+                  </div>
+                  {CURSOR_EFFECTS.map((effect) => {
+                    const isSelected = currentCursorEffect === effect.id;
+                    return (
+                      <button
+                        key={effect.id}
+                        type="button"
+                        onClick={() => changeCursorEffect(effect.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "0.55rem 0.75rem",
+                          borderRadius: "var(--radius-sm)",
+                          backgroundColor: isSelected ? "var(--bg-card-hover)" : "transparent",
+                          color: isSelected ? "var(--text-primary)" : "var(--text-secondary)",
+                          fontSize: "0.85rem",
+                          fontWeight: 500,
+                          textAlign: "left",
+                          transition: "all 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "var(--bg-card)";
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                          <span style={{ fontSize: "1.05rem" }}>{effect.icon}</span>
+                          <div>
+                            <div style={{ fontWeight: isSelected ? 600 : 400 }}>{effect.label}</div>
+                            <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{effect.badge}</div>
+                          </div>
+                        </div>
+                        {isSelected && <Check size={15} style={{ color: "var(--accent-primary)", flexShrink: 0 }} />}
                       </button>
                     );
                   })}
