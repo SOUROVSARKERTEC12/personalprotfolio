@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { FolderGit2, ExternalLink, CheckCircle2 } from "lucide-react";
 import { Github } from "@/components/Icons";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function Projects() {
+  const { t, data } = useLanguage();
+
   return (
     <section id="projects" className="section-wrapper">
       <div className="container">
@@ -12,19 +16,19 @@ export default function Projects() {
         <div className="section-header">
           <span className="section-subtitle">
             <FolderGit2 size={16} />
-            Featured Engineering
+            {t.projects.subtitle}
           </span>
           <h2 className="section-title">
-            Personal & Production <span className="gradient-text">Projects</span>
+            {t.projects.title} <span className="gradient-text">{t.projects.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Architected backend REST APIs, authentication engines, and media platforms built with NestJS, Node.js, and TypeScript.
+            {t.projects.desc}
           </p>
         </div>
 
         {/* Projects Cards Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: "1.75rem" }}>
-          {PORTFOLIO_DATA.projects.map((proj) => (
+          {data.projects.map((proj) => (
             <div
               key={proj.id}
               className="glass-card"
@@ -70,7 +74,7 @@ export default function Projects() {
               {/* Key Features List */}
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.75rem" }}>
                 <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  Key Capabilities:
+                  {t.projects.keyCapabilities}
                 </span>
                 {proj.keyFeatures.map((feat, idx) => (
                   <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "0.5rem" }}>
@@ -101,7 +105,7 @@ export default function Projects() {
                 }}
               >
                 <Github size={16} />
-                <span>GitHub Repo</span>
+                <span>{t.projects.githubRepo}</span>
                 <ExternalLink size={13} />
               </Link>
 

@@ -1,8 +1,12 @@
+"use client";
+
 import React from "react";
 import { Trophy, Bike, Plane, Heart } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function Interests() {
+  const { t, data } = useLanguage();
+
   const iconMap: Record<string, React.ReactNode> = {
     cricket: <Trophy size={28} style={{ color: "var(--accent-warning)" }} />,
     bike: <Bike size={28} style={{ color: "var(--accent-primary)" }} />,
@@ -17,19 +21,19 @@ export default function Interests() {
         <div className="section-header">
           <span className="section-subtitle">
             <Heart size={16} />
-            Beyond The Code
+            {t.interests.subtitle}
           </span>
           <h2 className="section-title">
-            Interests & <span className="gradient-text">Life Outside Terminal</span>
+            {t.interests.title} <span className="gradient-text">{t.interests.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Activities that keep focus sharp, promote tactical discipline, and inspire fresh creative energy.
+            {t.interests.desc}
           </p>
         </div>
 
         {/* Interests Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.75rem" }}>
-          {PORTFOLIO_DATA.interests.map((interest, idx) => (
+          {data.interests.map((interest, idx) => (
             <div
               key={idx}
               className="glass-card"

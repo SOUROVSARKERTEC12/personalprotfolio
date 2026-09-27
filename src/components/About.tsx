@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { 
   Cpu, 
@@ -8,35 +10,23 @@ import {
   Code2, 
   CheckCircle2 
 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function About() {
-  const pillars = [
-    {
-      icon: <Zap size={24} style={{ color: "var(--accent-primary)" }} />,
-      title: "Performance & Scalability",
-      description:
-        "Designing non-blocking event-driven backends with Node.js and NestJS. Optimizing database connection pools, indexing hot query paths, and minimizing latency.",
-    },
-    {
-      icon: <ShieldCheck size={24} style={{ color: "var(--accent-secondary)" }} />,
-      title: "MFA & Zero-Trust Security",
-      description:
-        "Building production-grade multi-factor authentication (Google & Microsoft Authenticator, TOTP), OAuth2 federated logins (Apple, Google, Facebook), and role-based access control (RBAC).",
-    },
-    {
-      icon: <Layers size={24} style={{ color: "var(--accent-tertiary)" }} />,
-      title: "Clean Modular Architecture",
-      description:
-        "Enforcing strict separation of concerns with NestJS modules, dependency injection, custom decorators, validation pipes, and domain-driven design principles.",
-    },
-    {
-      icon: <Database size={24} style={{ color: "var(--accent-success)" }} />,
-      title: "Relational & Document Databases",
-      description:
-        "Proficient in PostgreSQL, MySQL, MongoDB, and SQLite. Leveraging Prisma ORM and TypeORM for type-safe schema migrations, relationships, and transactional integrity.",
-    },
+  const { t, data } = useLanguage();
+
+  const iconList = [
+    <Zap key="zap" size={24} style={{ color: "var(--accent-primary)" }} />,
+    <ShieldCheck key="shield" size={24} style={{ color: "var(--accent-secondary)" }} />,
+    <Layers key="layers" size={24} style={{ color: "var(--accent-tertiary)" }} />,
+    <Database key="db" size={24} style={{ color: "var(--accent-success)" }} />,
   ];
+
+  const pillars = t.about.pillars.map((pillar, idx) => ({
+    icon: iconList[idx],
+    title: pillar.title,
+    description: pillar.description,
+  }));
 
   return (
     <section id="about" className="section-wrapper" style={{ backgroundColor: "var(--bg-secondary)" }}>
@@ -46,13 +36,13 @@ export default function About() {
         <div className="section-header">
           <span className="section-subtitle">
             <Cpu size={16} />
-            Engineering Philosophy
+            {t.about.subtitle}
           </span>
           <h2 className="section-title">
-            Architecting Resilient Backends with <span className="gradient-text">Clean Code</span>
+            {t.about.title} <span className="gradient-text">{t.about.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Turning complex business requirements into high-throughput, maintainable, and secure server-side services.
+            {t.about.desc}
           </p>
         </div>
 
@@ -77,19 +67,19 @@ export default function About() {
                 <Code2 size={22} />
               </div>
               <div>
-                <h3 style={{ fontSize: "1.3rem", fontWeight: 700 }}>About Sourov Sarkar</h3>
+                <h3 style={{ fontSize: "1.3rem", fontWeight: 700 }}>{t.about.cardTitle}</h3>
                 <span style={{ fontSize: "0.85rem", color: "var(--accent-primary)", fontWeight: 500 }}>
-                  Backend Developer & Scalable API Architect
+                  {t.about.cardSubtitle}
                 </span>
               </div>
             </div>
 
             <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: "1.75", marginBottom: "1rem" }}>
-              {PORTFOLIO_DATA.personal.bio}
+              {data.personal.bio}
             </p>
 
             <p style={{ color: "var(--text-secondary)", fontSize: "1.05rem", lineHeight: "1.75" }}>
-              {PORTFOLIO_DATA.personal.extendedBio}
+              {data.personal.extendedBio}
             </p>
 
             {/* Core Values checklist */}
@@ -103,12 +93,7 @@ export default function About() {
                 borderTop: "1px solid var(--border-subtle)",
               }}
             >
-              {[
-                "Strict Type Safety with TypeScript",
-                "Idempotent & RESTful API Design",
-                "Zero-Trust MFA & RBAC Protection",
-                "Optimized SQL Queries & Indexing",
-              ].map((item, idx) => (
+              {t.about.coreValues.map((item, idx) => (
                 <div key={idx} style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
                   <CheckCircle2 size={18} style={{ color: "var(--accent-success)", flexShrink: 0 }} />
                   <span style={{ fontSize: "0.9rem", color: "var(--text-primary)", fontWeight: 500 }}>
@@ -170,7 +155,7 @@ export default function About() {
             marginTop: "3rem",
           }}
         >
-          {PORTFOLIO_DATA.stats.map((stat, idx) => (
+          {data.stats.map((stat, idx) => (
             <div
               key={idx}
               className="glass-card"

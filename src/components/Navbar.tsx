@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useSyncExternalStore } from "react";
-import { Terminal, Download, Palette, Menu, X, Check, FileText, Sparkles, BookOpen, Zap } from "lucide-react";
+import { Terminal, Download, Palette, Menu, X, Check, Sparkles, BookOpen, Zap, Clock, Languages } from "lucide-react";
+import { LANGUAGES, TRANSLATIONS, Language } from "@/data/translations";
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -67,15 +68,110 @@ function getThemeServerSnapshot(): string {
   return "cyber";
 }
 
+function subscribeLanguage(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("sourov_language_change", callback);
+  window.addEventListener("storage", callback);
+  const observer = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.type === "attributes" && (m.attributeName === "data-lang" || m.attributeName === "lang")) {
+        callback();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-lang", "lang"] });
+  return () => {
+    window.removeEventListener("sourov_language_change", callback);
+    window.removeEventListener("storage", callback);
+    observer.disconnect();
+  };
+}
+
+function getLanguageSnapshot(): Language {
+  try {
+    const lang = document.documentElement.getAttribute("data-lang") || localStorage.getItem("sourov_language");
+    return (lang === "bn" ? "bn" : "en") as Language;
+  } catch {
+    return "en";
+  }
+}
+
+function getLanguageServerSnapshot(): Language {
+  return "en";
+}
+
+let currentClockTime = 0;
+const clockListeners = new Set<() => void>();
+let clockIntervalId: ReturnType<typeof setInterval> | null = null;
+
+function subscribeClock(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  clockListeners.add(callback);
+
+  if (clockListeners.size === 1) {
+    currentClockTime = Date.now();
+    queueMicrotask(() => {
+      clockListeners.forEach((listener) => listener());
+    });
+
+    clockIntervalId = setInterval(() => {
+      currentClockTime = Date.now();
+      clockListeners.forEach((listener) => listener());
+    }, 1000);
+  }
+
+  return () => {
+    clockListeners.delete(callback);
+    if (clockListeners.size === 0 && clockIntervalId) {
+      clearInterval(clockIntervalId);
+      clockIntervalId = null;
+    }
+  };
+}
+
+function getClockSnapshot(): number {
+  return currentClockTime;
+}
+
+function getClockServerSnapshot(): number {
+  return 0;
+}
+
 export default function Navbar({ onOpenResume }: NavbarProps) {
   const [activeSection, setActiveSection] = useState("hero");
   const currentTheme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getThemeServerSnapshot);
   const currentCursorEffect = useSyncExternalStore(subscribeCursor, getCursorSnapshot, getCursorServerSnapshot);
+  const currentLanguage = useSyncExternalStore(subscribeLanguage, getLanguageSnapshot, getLanguageServerSnapshot);
+  const clockTime = useSyncExternalStore(subscribeClock, getClockSnapshot, getClockServerSnapshot);
+  const clockMounted = clockTime !== 0;
+  const currentTime = new Date(clockTime);
+
   const [showThemePicker, setShowThemePicker] = useState(false);
   const [showCursorPicker, setShowCursorPicker] = useState(false);
+  const [showLangPicker, setShowLangPicker] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [praxisTooltipOpen, setPraxisTooltipOpen] = useState(false);
+  const [is24Hour, setIs24Hour] = useState(false);
+
+  const t = TRANSLATIONS[currentLanguage] || TRANSLATIONS.en;
+
+  const dateString = clockMounted
+    ? currentTime.toLocaleDateString(currentLanguage === "bn" ? "bn-BD" : "en-US", {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      })
+    : "";
+
+  const timeString = clockMounted
+    ? currentTime.toLocaleTimeString(currentLanguage === "bn" ? "bn-BD" : "en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: !is24Hour,
+      })
+    : "--:--:--";
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -83,10 +179,12 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
       if (
         !target.closest("#theme-switcher-container") &&
         !target.closest("#cursor-effect-container") &&
+        !target.closest("#language-switcher-container") &&
         !target.closest(".praxis-badge-trigger")
       ) {
         setShowThemePicker(false);
         setShowCursorPicker(false);
+        setShowLangPicker(false);
         setPraxisTooltipOpen(false);
       }
     };
@@ -139,13 +237,25 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
     setShowCursorPicker(false);
   };
 
+  const changeLanguage = (langId: Language) => {
+    document.documentElement.setAttribute("data-lang", langId);
+    document.documentElement.setAttribute("lang", langId);
+    try {
+      localStorage.setItem("sourov_language", langId);
+    } catch {
+      // ignore
+    }
+    window.dispatchEvent(new CustomEvent("sourov_language_change", { detail: langId }));
+    setShowLangPicker(false);
+  };
+
   const navLinks = [
-    { href: "#about", label: "About", id: "about" },
-    { href: "#experience", label: "Experience", id: "experience" },
-    { href: "#skills", label: "Skills", id: "skills" },
-    { href: "#projects", label: "Projects", id: "projects" },
-    { href: "#education", label: "Education", id: "education" },
-    { href: "#contact", label: "Contact", id: "contact" },
+    { href: "#about", label: t.nav.about, id: "about" },
+    { href: "#experience", label: t.nav.experience, id: "experience" },
+    { href: "#skills", label: t.nav.skills, id: "skills" },
+    { href: "#projects", label: t.nav.projects, id: "projects" },
+    { href: "#education", label: t.nav.education, id: "education" },
+    { href: "#contact", label: t.nav.contact, id: "contact" },
   ];
 
   return (
@@ -205,6 +315,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             </div>
             <div>
               <div
+                className="nav-brand-title"
                 style={{
                   fontWeight: 800,
                   fontSize: "1.1rem",
@@ -215,7 +326,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                   position: "relative",
                 }}
               >
-                <span>Sourov</span>
+                <span>{currentLanguage === "bn" ? "সৌরভ" : "Sourov"}</span>
                 <span
                   className={`praxis-badge-trigger ${praxisTooltipOpen ? "active" : ""}`}
                   onMouseEnter={() => setPraxisTooltipOpen(true)}
@@ -225,9 +336,9 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                     e.stopPropagation();
                     setPraxisTooltipOpen((prev) => !prev);
                   }}
-                  title="Praxis (Πρᾶξις) - Hover to view philosophical meaning"
+                  title={currentLanguage === "bn" ? "প্র্যাক্সিস (Πρᾶξις) - দার্শনিক অর্থ দেখতে হোভার করুন" : "Praxis (Πρᾶξις) - Hover to view philosophical meaning"}
                 >
-                  <span className="praxis-text">Praxis</span>
+                  <span className="praxis-text">{currentLanguage === "bn" ? "প্র্যাক্সিস" : "Praxis"}</span>
                   <span className="praxis-indicator" aria-hidden="true">✦</span>
 
                   {/* Philosophical Tooltip Popover */}
@@ -262,7 +373,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                           fontFamily: "var(--font-mono)",
                         }}
                       >
-                        <BookOpen size={13} /> Greek Philosophy
+                        <BookOpen size={13} /> {t.praxis.tag}
                       </span>
                       <span
                         style={{
@@ -273,17 +384,17 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                           letterSpacing: "0.05em",
                         }}
                       >
-                        Πρᾶξις
+                        {t.praxis.greek}
                       </span>
                     </div>
 
                     {/* Word title & pronunciation */}
                     <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", marginBottom: "0.55rem" }}>
                       <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
-                        Praxis
+                        {t.praxis.word}
                       </span>
                       <span style={{ fontSize: "0.8rem", color: "var(--accent-primary)", fontWeight: 600 }}>
-                        /ˈpræk.sɪs/ • noun
+                        {t.praxis.pronunciation}
                       </span>
                     </div>
 
@@ -297,7 +408,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                         fontWeight: 450,
                       }}
                     >
-                      &ldquo;The practice of translating abstract philosophical theory, logic, and first principles into living, tangible action.&rdquo;
+                      &ldquo;{t.praxis.quote}&rdquo;
                     </p>
 
                     {/* Backend Engineering application */}
@@ -324,17 +435,25 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                         }}
                       >
                         <Zap size={13} />
-                        <span>In Backend Engineering</span>
+                        <span>{t.praxis.engineeringTitle}</span>
                       </div>
                       <div style={{ fontSize: "0.82rem", color: "var(--text-primary)", lineHeight: "1.55", fontWeight: 400 }}>
-                        Transforming distributed systems theory into resilient, high-throughput production infrastructure.
+                        {t.praxis.engineeringDesc}
                       </div>
                     </div>
                   </div>
                 </span>
               </div>
-              <div className="nav-brand-subtitle" style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "-2px" }}>
-                Backend Engineer
+              <div
+                className="nav-brand-subtitle"
+                style={{
+                  fontSize: "0.72rem",
+                  color: "var(--text-muted)",
+                  fontFamily: currentLanguage === "bn" ? "var(--font-bangla)" : "var(--font-mono)",
+                  marginTop: "-2px",
+                }}
+              >
+                {t.nav.subtitle}
               </div>
             </div>
           </a>
@@ -388,6 +507,79 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
 
           {/* Right Action Buttons */}
           <div className="navbar-actions" style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            {/* Live Running Date & Time Widget */}
+            <div
+              className="navbar-clock-widget"
+              onClick={() => setIs24Hour((prev) => !prev)}
+              title={`Live System Clock (${is24Hour ? "24h" : "12h"} format) • Click to toggle`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.45rem",
+                padding: "0.38rem 0.75rem",
+                borderRadius: "10px",
+                backgroundColor: "var(--bg-card)",
+                border: "1px solid var(--border-subtle)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.78rem",
+                letterSpacing: "-0.01em",
+                height: "40px",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                userSelect: "none",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "var(--accent-primary)";
+                e.currentTarget.style.boxShadow = "var(--border-glow)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border-subtle)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                <span
+                  style={{
+                    width: "7px",
+                    height: "7px",
+                    borderRadius: "50%",
+                    backgroundColor: "var(--accent-success)",
+                    boxShadow: "0 0 8px var(--accent-success)",
+                    display: "inline-block",
+                  }}
+                  className="animate-pulse-glow"
+                />
+                <Clock size={14} style={{ color: "var(--accent-primary)" }} />
+              </div>
+
+              <span
+                className="navbar-clock-date"
+                suppressHydrationWarning
+                style={{ color: "var(--text-muted)", fontWeight: 500 }}
+              >
+                {dateString}
+              </span>
+
+              <span
+                className="navbar-clock-separator"
+                style={{ color: "var(--text-muted)", opacity: 0.5 }}
+              >
+                •
+              </span>
+
+              <span
+                className="navbar-clock-time"
+                suppressHydrationWarning
+                style={{
+                  color: "var(--text-primary)",
+                  fontWeight: 700,
+                  fontVariantNumeric: "tabular-nums",
+                }}
+              >
+                {timeString}
+              </span>
+            </div>
+
             {/* Theme Picker Dropdown Toggle */}
             <div id="theme-switcher-container" style={{ position: "relative" }}>
               <button
@@ -631,21 +823,125 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               )}
             </div>
 
-            {/* Resume Button */}
-            <button
-              type="button"
-              id="navbar-resume-button"
-              onClick={onOpenResume}
-              className="btn-primary navbar-resume-btn"
-              style={{
-                padding: "0.55rem 1.1rem",
-                fontSize: "0.85rem",
-                borderRadius: "var(--radius-sm)",
-              }}
-            >
-              <FileText size={16} />
-              <span className="resume-btn-text">Resume</span>
-            </button>
+            {/* Multilingual Switcher Dropdown (Replaces Resume button) */}
+            <div id="language-switcher-container" style={{ position: "relative" }}>
+              <button
+                type="button"
+                id="language-switcher-button"
+                aria-label="Change language"
+                title="Change Language / ভাষা পরিবর্তন করুন"
+                onClick={() => {
+                  setShowLangPicker(!showLangPicker);
+                  setShowThemePicker(false);
+                  setShowCursorPicker(false);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.45rem",
+                  height: "40px",
+                  padding: "0 0.85rem",
+                  borderRadius: "10px",
+                  backgroundColor: "var(--bg-card)",
+                  border: "1px solid var(--border-subtle)",
+                  color: "var(--text-primary)",
+                  transition: "all 0.2s ease",
+                  fontFamily: currentLanguage === "bn" ? "var(--font-bangla)" : "var(--font-mono)",
+                  fontSize: "0.84rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--accent-primary)";
+                  e.currentTarget.style.boxShadow = "var(--border-glow)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-subtle)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <Languages size={17} style={{ color: "var(--accent-primary)" }} />
+                <span>{currentLanguage === "bn" ? "বাংলা" : "English"}</span>
+                <span style={{ fontSize: "0.7rem", opacity: 0.65 }}>▾</span>
+              </button>
+
+              {/* Language Dropdown Panel */}
+              {showLangPicker && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "120%",
+                    right: 0,
+                    width: "210px",
+                    maxWidth: "calc(100vw - 2rem)",
+                    backgroundColor: "var(--bg-secondary)",
+                    border: "1px solid var(--border-accent)",
+                    borderRadius: "var(--radius-md)",
+                    boxShadow: "var(--shadow-lg)",
+                    padding: "0.6rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.4rem",
+                    zIndex: 110,
+                    backdropFilter: "blur(20px)",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "0.72rem",
+                      fontWeight: 700,
+                      color: "var(--text-muted)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      padding: "0.3rem 0.6rem",
+                    }}
+                  >
+                    Select Language / ভাষা
+                  </div>
+
+                  {LANGUAGES.map((lang) => {
+                    const isSelected = currentLanguage === lang.id;
+                    return (
+                      <button
+                        key={lang.id}
+                        type="button"
+                        onClick={() => changeLanguage(lang.id)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "0.6rem 0.75rem",
+                          borderRadius: "var(--radius-sm)",
+                          backgroundColor: isSelected ? "var(--bg-card-hover)" : "transparent",
+                          color: isSelected ? "var(--text-primary)" : "var(--text-secondary)",
+                          fontSize: "0.88rem",
+                          fontWeight: isSelected ? 700 : 500,
+                          textAlign: "left",
+                          transition: "all 0.15s ease",
+                          cursor: "pointer",
+                          fontFamily: lang.id === "bn" ? "var(--font-bangla)" : "var(--font-main)",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "var(--bg-card)";
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isSelected) e.currentTarget.style.backgroundColor = "transparent";
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                          <span style={{ fontSize: "1.15rem" }}>{lang.flag}</span>
+                          <div>
+                            <div style={{ fontWeight: isSelected ? 700 : 500 }}>{lang.nativeName}</div>
+                            <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>{lang.label} ({lang.short})</div>
+                          </div>
+                        </div>
+                        {isSelected && <Check size={16} style={{ color: "var(--accent-primary)", flexShrink: 0 }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             {/* Mobile Hamburger Toggle */}
             <button
@@ -694,6 +990,90 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             WebkitOverflowScrolling: "touch",
           }}
         >
+          {/* Mobile Live Time Badge */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "0.75rem 1rem",
+              borderRadius: "10px",
+              backgroundColor: "var(--bg-card)",
+              border: "1px solid var(--border-subtle)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.82rem",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--accent-primary)" }}>
+              <span
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  borderRadius: "50%",
+                  backgroundColor: "var(--accent-success)",
+                  boxShadow: "0 0 8px var(--accent-success)",
+                  display: "inline-block",
+                }}
+                className="animate-pulse-glow"
+              />
+              <Clock size={15} />
+              <span suppressHydrationWarning style={{ color: "var(--text-secondary)", fontWeight: 500 }}>
+                {dateString}
+              </span>
+            </div>
+            <span
+              suppressHydrationWarning
+              style={{
+                color: "var(--text-primary)",
+                fontWeight: 700,
+                fontVariantNumeric: "tabular-nums",
+              }}
+            >
+              {timeString}
+            </span>
+          </div>
+
+          {/* Mobile Language Switcher Row */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "0.75rem 1rem",
+              borderRadius: "10px",
+              backgroundColor: "var(--bg-card)",
+              border: "1px solid var(--border-subtle)",
+              fontSize: "0.85rem",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--accent-primary)" }}>
+              <Languages size={16} />
+              <span style={{ fontWeight: 600 }}>Language / ভাষা</span>
+            </div>
+            <div style={{ display: "flex", gap: "0.4rem" }}>
+              {LANGUAGES.map((lang) => (
+                <button
+                  key={lang.id}
+                  type="button"
+                  onClick={() => changeLanguage(lang.id)}
+                  style={{
+                    padding: "0.35rem 0.7rem",
+                    borderRadius: "6px",
+                    border: currentLanguage === lang.id ? "1px solid var(--accent-primary)" : "1px solid var(--border-subtle)",
+                    backgroundColor: currentLanguage === lang.id ? "rgba(6, 182, 212, 0.15)" : "transparent",
+                    color: currentLanguage === lang.id ? "var(--accent-primary)" : "var(--text-secondary)",
+                    fontWeight: currentLanguage === lang.id ? 700 : 500,
+                    fontSize: "0.8rem",
+                    fontFamily: lang.id === "bn" ? "var(--font-bangla)" : "var(--font-mono)",
+                    cursor: "pointer",
+                  }}
+                >
+                  {lang.flag} {lang.nativeName}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {navLinks.map((link) => (
               <a
@@ -712,7 +1092,11 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                 }}
               >
                 <span>{link.label}</span>
-                <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>0{navLinks.indexOf(link) + 1}</span>
+                <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                  {currentLanguage === "bn"
+                    ? `০${navLinks.indexOf(link) + 1}`.replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d, 10)])
+                    : `0${navLinks.indexOf(link) + 1}`}
+                </span>
               </a>
             ))}
           </div>
@@ -728,7 +1112,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                   boxShadow: "0 0 10px var(--accent-success)",
                 }}
               />
-              <span>Available for backend opportunities</span>
+              <span>{t.hero.badge}</span>
             </div>
 
             <button
@@ -741,7 +1125,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               style={{ width: "100%", justifyContent: "center" }}
             >
               <Download size={18} />
-              <span>View & Download Resume PDF</span>
+              <span>{currentLanguage === "bn" ? "জীবনবৃত্তান্ত PDF দেখুন ও ডাউনলোড করুন" : "View & Download Resume PDF"}</span>
             </button>
           </div>
         </div>
@@ -775,10 +1159,28 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
           .navbar-actions {
             gap: 0.45rem !important;
           }
+          .nav-brand-title {
+            font-size: 0.98rem !important;
+            gap: 0.28rem !important;
+          }
+        }
+        @media (max-width: 1060px) {
+          .navbar-clock-date,
+          .navbar-clock-separator {
+            display: none !important;
+          }
+        }
+        @media (max-width: 580px) {
+          .navbar-clock-widget {
+            display: none !important;
+          }
         }
         @media (max-width: 380px) {
           .nav-brand-subtitle {
             display: none !important;
+          }
+          .nav-brand-title {
+            font-size: 0.9rem !important;
           }
         }
       `}</style>

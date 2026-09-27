@@ -11,9 +11,10 @@ import {
   Check
 } from "lucide-react";
 import { Github, Linkedin, StackOverflow } from "@/components/Icons";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function Contact() {
+  const { t, data } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,7 +32,7 @@ export default function Contact() {
       setLoading(false);
       setFormSubmitted(true);
       // Construct mailto link fallback
-      const mailtoUrl = `mailto:${PORTFOLIO_DATA.personal.email}?subject=${encodeURIComponent(
+      const mailtoUrl = `mailto:${data.personal.email}?subject=${encodeURIComponent(
         formData.subject || `Inquiry from ${formData.name}`
       )}&body=${encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -48,13 +49,13 @@ export default function Contact() {
         <div className="section-header">
           <span className="section-subtitle">
             <Mail size={16} />
-            Let&apos;s Connect
+            {t.contact.subtitle}
           </span>
           <h2 className="section-title">
-            Get In <span className="gradient-text">Touch</span>
+            {t.contact.title} <span className="gradient-text">{t.contact.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Looking for a skilled Backend Developer who crafts maintainable, high-performance systems? Feel free to reach out directly.
+            {t.contact.desc}
           </p>
         </div>
 
@@ -96,9 +97,9 @@ export default function Contact() {
                   <Mail size={20} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Contact Information</h3>
+                  <h3 style={{ fontSize: "1.25rem", fontWeight: 700 }}>{t.contact.infoTitle}</h3>
                   <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                    Reach out directly or connect on professional networks
+                    {t.contact.infoDesc}
                   </span>
                 </div>
               </div>
@@ -109,8 +110,8 @@ export default function Contact() {
               
               {/* Email Redirect Item */}
               <a
-                href={`mailto:${PORTFOLIO_DATA.personal.email}`}
-                title="Send an Email"
+                href={`mailto:${data.personal.email}`}
+                title={t.contact.directEmail}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -152,10 +153,10 @@ export default function Contact() {
                   </div>
                   <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
                     <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
-                      Direct Email
+                      {t.contact.directEmail}
                     </div>
                     <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {PORTFOLIO_DATA.personal.email}
+                      {data.personal.email}
                     </div>
                   </div>
                 </div>
@@ -171,17 +172,17 @@ export default function Contact() {
                     flexShrink: 0,
                   }}
                 >
-                  <span className="contact-action-label">Send Email</span>
+                  <span className="contact-action-label">{t.contact.sendEmailAction}</span>
                   <ExternalLink size={14} />
                 </div>
               </a>
 
               {/* Phone / WhatsApp Redirect Item */}
               <a
-                href={`https://wa.me/${PORTFOLIO_DATA.personal.phone.replace(/[^0-9]/g, "")}`}
+                href={`https://wa.me/${data.personal.phone.replace(/[^0-9]/g, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                title="Message on WhatsApp"
+                title={t.contact.phone}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -223,10 +224,10 @@ export default function Contact() {
                   </div>
                   <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
                     <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
-                      WhatsApp / Phone
+                      {t.contact.phone}
                     </div>
                     <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {PORTFOLIO_DATA.personal.phone}
+                      {data.personal.phone}
                     </div>
                   </div>
                 </div>
@@ -242,7 +243,7 @@ export default function Contact() {
                     flexShrink: 0,
                   }}
                 >
-                  <span className="contact-action-label">Chat on WhatsApp</span>
+                  <span className="contact-action-label">{t.contact.chatWhatsapp}</span>
                   <ExternalLink size={14} />
                 </div>
               </a>
@@ -278,10 +279,10 @@ export default function Contact() {
                 </div>
                 <div style={{ minWidth: 0, flex: 1, overflow: "hidden" }}>
                   <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
-                    Location
+                    {t.contact.location}
                   </div>
                   <div style={{ fontSize: "clamp(0.8rem, 2.5vw, 0.95rem)", fontWeight: 700, color: "var(--text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {PORTFOLIO_DATA.personal.location}
+                    {data.personal.location}
                   </div>
                 </div>
               </div>
@@ -291,11 +292,11 @@ export default function Contact() {
             {/* Social Links inside the same card */}
             <div style={{ paddingTop: "0.5rem", minWidth: 0 }}>
               <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600, marginBottom: "0.75rem" }}>
-                Social & Developer Profiles
+                {t.contact.socials}
               </div>
               <div className="contact-social-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.5rem" }}>
                 <a
-                  href={PORTFOLIO_DATA.personal.linkedin}
+                  href={data.personal.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -330,7 +331,7 @@ export default function Contact() {
                 </a>
 
                 <a
-                  href={PORTFOLIO_DATA.personal.github}
+                  href={data.personal.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -365,7 +366,7 @@ export default function Contact() {
                 </a>
 
                 <a
-                  href={PORTFOLIO_DATA.personal.stackoverflow}
+                  href={data.personal.stackoverflow}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -421,9 +422,9 @@ export default function Contact() {
                 <MessageSquare size={20} />
               </div>
               <div>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 700 }}>Send a Message</h3>
+                <h3 style={{ fontSize: "1.25rem", fontWeight: 700 }}>{t.contact.formTitle}</h3>
                 <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  Expect a prompt response within 24 hours
+                  {t.contact.formDesc}
                 </span>
               </div>
             </div>
@@ -453,10 +454,10 @@ export default function Contact() {
                 >
                   <Check size={24} />
                 </div>
-                <h4 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "0.5rem" }}>Message Drafted!</h4>
+                <h4 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "0.5rem" }}>{t.contact.successTitle}</h4>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: "1.6", marginBottom: "1.25rem" }}>
-                  Your email client has been opened with your inquiry. You can also contact Sourov directly at{" "}
-                  <strong>{PORTFOLIO_DATA.personal.email}</strong>.
+                  {t.contact.successDesc}{" "}
+                  <strong>{data.personal.email}</strong>.
                 </p>
                 <button
                   type="button"
@@ -467,7 +468,7 @@ export default function Contact() {
                   className="btn-secondary"
                   style={{ fontSize: "0.85rem", padding: "0.5rem 1rem" }}
                 >
-                  Send Another Message
+                  {t.contact.sendAnother}
                 </button>
               </div>
             ) : (
@@ -475,12 +476,12 @@ export default function Contact() {
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-row">
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>
-                      Your Name *
+                      {t.contact.nameLabel} *
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Jane Doe"
+                      placeholder={t.contact.namePlaceholder}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       style={{
@@ -500,12 +501,12 @@ export default function Contact() {
 
                   <div>
                     <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>
-                      Your Email *
+                      {t.contact.emailLabel} *
                     </label>
                     <input
                       type="email"
                       required
-                      placeholder="jane@company.com"
+                      placeholder={t.contact.emailPlaceholder}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       style={{
@@ -526,11 +527,11 @@ export default function Contact() {
 
                 <div>
                   <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>
-                    Subject
+                    {t.contact.subjectLabel}
                   </label>
                   <input
                     type="text"
-                    placeholder="Backend Role Inquiry / Project Collaboration"
+                    placeholder={t.contact.subjectPlaceholder}
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     style={{
@@ -550,12 +551,12 @@ export default function Contact() {
 
                 <div>
                   <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: "var(--text-secondary)", marginBottom: "0.4rem" }}>
-                    Message *
+                    {t.contact.messageLabel} *
                   </label>
                   <textarea
                     rows={4}
                     required
-                    placeholder="Describe your backend requirement, architecture goals, or role details..."
+                    placeholder={t.contact.messagePlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     style={{
@@ -582,7 +583,7 @@ export default function Contact() {
                   style={{ width: "100%", padding: "0.85rem", justifyContent: "center" }}
                 >
                   <Send size={17} />
-                  <span>{loading ? "Preparing message..." : "Send Message"}</span>
+                  <span>{loading ? t.contact.submittingBtn : t.contact.submitBtn}</span>
                 </button>
               </form>
             )}

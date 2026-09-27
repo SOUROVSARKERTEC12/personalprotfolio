@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
 /* Modern Design System & Multi-Theme Architecture for Sourov Sarkar Portfolio */
 
 :root {
@@ -45,6 +47,7 @@
 
   --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-bangla: 'Hind Siliguri', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* Theme 2: Emerald Matrix */
@@ -614,13 +617,52 @@ code, pre {
   border-top-color: rgba(37, 99, 235, 0.35);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .praxis-badge-trigger {
+    padding: 0px 5px;
+    gap: 0.18rem;
+    border-radius: 4px;
+    vertical-align: middle;
+  }
+  .praxis-text {
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .praxis-indicator {
+    font-size: 0.48rem;
+  }
   .praxis-popover-card {
-    left: -45px;
-    width: 300px;
+    left: -40px;
+    width: 295px;
+    max-width: calc(100vw - 1.5rem);
+    padding: 0.9rem 1rem;
   }
   .praxis-popover-arrow {
-    left: 60px;
+    left: 55px;
+  }
+}
+
+@media (max-width: 420px) {
+  .praxis-badge-trigger {
+    padding: 0px 4px;
+    gap: 0.12rem;
+  }
+  .praxis-text {
+    font-size: 0.65rem;
+  }
+  .praxis-indicator {
+    font-size: 0.42rem;
+  }
+  .praxis-popover-card {
+    left: -30px;
+    width: 275px;
+    max-width: calc(100vw - 1.25rem);
+    padding: 0.8rem 0.9rem;
+  }
+  .praxis-popover-arrow {
+    left: 45px;
   }
 }
 
@@ -648,5 +690,38 @@ code, pre {
   transform: translateY(-2px) scale(1.015);
   filter: drop-shadow(0 0 42px var(--accent-primary));
 }
+
+/* Modern Bangla Sans-Serif Typography */
+[data-lang="bn"],
+[lang="bn"] {
+  font-family: var(--font-bangla);
+}
+
+[data-lang="bn"] h1,
+[data-lang="bn"] h2,
+[data-lang="bn"] h3,
+[data-lang="bn"] h4,
+[data-lang="bn"] p,
+[data-lang="bn"] span,
+[data-lang="bn"] a,
+[data-lang="bn"] button,
+[data-lang="bn"] input,
+[data-lang="bn"] textarea,
+[data-lang="bn"] label {
+  font-family: var(--font-bangla);
+}
+
+/* Ensure code, terminals, and numbers retain clean monospace fonts */
+[data-lang="bn"] code,
+[data-lang="bn"] pre,
+[data-lang="bn"] .font-mono,
+[data-lang="bn"] [style*="fontFamily: var(--font-mono)"] {
+  font-family: var(--font-mono) !important;
+}
+
+.font-bangla {
+  font-family: var(--font-bangla) !important;
+}
+
 
 

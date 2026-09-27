@@ -77,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="cyber" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="bn" data-lang="bn" data-theme="cyber" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -89,6 +89,15 @@ export default function RootLayout({
                     document.documentElement.setAttribute('data-theme', savedTheme);
                   } else {
                     document.documentElement.setAttribute('data-theme', 'cyber');
+                  }
+
+                  const savedLang = localStorage.getItem('sourov_language');
+                  if (savedLang) {
+                    document.documentElement.setAttribute('data-lang', savedLang);
+                    document.documentElement.setAttribute('lang', savedLang);
+                  } else {
+                    document.documentElement.setAttribute('data-lang', 'bn');
+                    document.documentElement.setAttribute('lang', 'bn');
                   }
                 } catch (e) {}
               })();

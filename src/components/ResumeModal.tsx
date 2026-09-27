@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { X, Download, ExternalLink, FileText } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -11,6 +11,8 @@ interface ResumeModalProps {
 }
 
 export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
+  const { t, data } = useLanguage();
+
   if (!isOpen) return null;
 
   return (
@@ -78,10 +80,10 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             </div>
             <div style={{ minWidth: 0 }}>
               <h3 style={{ fontSize: "clamp(0.9rem, 2.5vw, 1.1rem)", fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                Sourov Sarkar - Resume
+                {t.resumeModal.title}
               </h3>
               <p style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                Backend Developer • PDF
+                {t.resumeModal.subtitle}
               </p>
             </div>
           </div>
@@ -97,12 +99,13 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               }}
             >
               <Download size={15} />
-              <span className="resume-download-text">Download PDF</span>
+              <span className="resume-download-text">{t.resumeModal.download}</span>
             </a>
 
             <button
               type="button"
               onClick={onClose}
+              aria-label={t.resumeModal.close}
               style={{
                 width: "36px",
                 height: "36px",
@@ -166,14 +169,14 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             backgroundColor: "var(--bg-card)",
           }}
         >
-          <span>Email: {PORTFOLIO_DATA.personal.email}</span>
+          <span>{t.contact.directEmail}: {data.personal.email}</span>
           <a
             href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--accent-primary)", display: "flex", alignItems: "center", gap: "0.3rem" }}
           >
-            <span>Open in New Tab</span>
+            <span>{t.resumeModal.openNewTab}</span>
             <ExternalLink size={13} />
           </a>
         </div>

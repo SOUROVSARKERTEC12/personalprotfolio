@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
 import { GraduationCap, Calendar, CheckCircle2 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function Education() {
-  const edu = PORTFOLIO_DATA.education;
+  const { t, data } = useLanguage();
+  const edu = data.education;
 
   return (
     <section id="education" className="section-wrapper" style={{ backgroundColor: "var(--bg-secondary)" }}>
@@ -13,13 +16,13 @@ export default function Education() {
         <div className="section-header">
           <span className="section-subtitle">
             <GraduationCap size={16} />
-            Academic Foundations
+            {t.education.subtitle}
           </span>
           <h2 className="section-title">
-            Education & <span className="gradient-text">Credentials</span>
+            {t.education.title} <span className="gradient-text">{t.education.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Strong foundational computer science background providing the theoretical and algorithmic grounding for building scalable distributed software.
+            {t.education.desc}
           </p>
         </div>
 
@@ -80,7 +83,7 @@ export default function Education() {
             {/* Core Coursework & Theoretical Focus */}
             <div style={{ paddingTop: "1.5rem", borderTop: "1px solid var(--border-subtle)" }}>
               <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.8rem" }}>
-                Key Computer Science Principles Mastered:
+                {t.education.coreSubjects}
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: "0.75rem" }}>

@@ -22,9 +22,7 @@ import {
   GitBranch,
   Send
 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
-
-type CategoryFilter = "All" | "Core Backend & Frameworks" | "Databases & ORMs" | "Languages & Tools" | "Security, Auth & Architecture";
+import { useLanguage } from "@/data/translations";
 
 const deviconMap: Record<string, string> = {
   "Node.js": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
@@ -101,18 +99,19 @@ function SkillImage({ name }: { name: string }) {
 }
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState<CategoryFilter>("All");
+  const { t, data } = useLanguage();
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState<number | null>(null);
 
-  const categoryIcons: Record<string, React.ReactNode> = {
-    "Core Backend & Frameworks": <Server size={18} style={{ color: "var(--accent-primary)" }} />,
-    "Databases & ORMs": <Database size={18} style={{ color: "var(--accent-secondary)" }} />,
-    "Languages & Tools": <Code2 size={18} style={{ color: "var(--accent-warning)" }} />,
-    "Security, Auth & Architecture": <ShieldCheck size={18} style={{ color: "var(--accent-success)" }} />,
-  };
+  const categoryIcons = [
+    <Server key="0" size={18} style={{ color: "var(--accent-primary)" }} />,
+    <Database key="1" size={18} style={{ color: "var(--accent-secondary)" }} />,
+    <Code2 key="2" size={18} style={{ color: "var(--accent-warning)" }} />,
+    <ShieldCheck key="3" size={18} style={{ color: "var(--accent-success)" }} />,
+  ];
 
-  const displayedCategories = activeCategory === "All"
-    ? PORTFOLIO_DATA.skillCategories
-    : PORTFOLIO_DATA.skillCategories.filter((cat) => cat.name === activeCategory);
+  const displayedCategories = activeCategoryIndex === null
+    ? data.skillCategories
+    : data.skillCategories.filter((_, idx) => idx === activeCategoryIndex);
 
   return (
     <section id="skills" className="section-wrapper" style={{ backgroundColor: "var(--bg-secondary)" }}>
@@ -122,13 +121,13 @@ export default function Skills() {
         <div className="section-header">
           <span className="section-subtitle">
             <Terminal size={16} />
-            Technical Arsenal
+            {t.skills.subtitle}
           </span>
           <h2 className="section-title">
-            Skills & <span className="gradient-text">Proficiencies</span>
+            {t.skills.title} <span className="gradient-text">{t.skills.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Production-tested backend stacks, databases, and enterprise security frameworks.
+            {t.skills.desc}
           </p>
         </div>
 
@@ -142,36 +141,58 @@ export default function Skills() {
             marginBottom: "2rem",
           }}
         >
-          {(["All", "Core Backend & Frameworks", "Databases & ORMs", "Languages & Tools", "Security, Auth & Architecture"] as const).map(
-            (cat) => {
-              const isActive = activeCategory === cat;
-              return (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setActiveCategory(cat)}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "0.4rem",
-                    padding: "0.4rem clamp(0.65rem, 2vw, 1rem)",
-                    borderRadius: "var(--radius-full)",
-                    fontSize: "clamp(0.76rem, 2.2vw, 0.84rem)",
-                    fontWeight: 600,
-                    backgroundColor: isActive ? "var(--accent-primary)" : "var(--bg-card)",
-                    color: isActive ? "#ffffff" : "var(--text-secondary)",
-                    border: "1px solid",
-                    borderColor: isActive ? "var(--accent-primary)" : "var(--border-subtle)",
-                    boxShadow: isActive ? "0 4px 12px rgba(6, 182, 212, 0.3)" : "none",
-                    transition: "all 0.2s ease",
-                    cursor: "pointer",
-                  }}
-                >
-                  <span>{cat}</span>
-                </button>
-              );
-            }
-          )}
+          {/* "All" button */}
+          <button
+            type="button"
+            onClick={() => setActiveCategoryIndex(null)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.4rem",
+              padding: "0.4rem clamp(0.65rem, 2vw, 1rem)",
+              borderRadius: "var(--radius-full)",
+              fontSize: "clamp(0.76rem, 2.2vw, 0.84rem)",
+              fontWeight: 600,
+              backgroundColor: activeCategoryIndex === null ? "var(--accent-primary)" : "var(--bg-card)",
+              color: activeCategoryIndex === null ? "#ffffff" : "var(--text-secondary)",
+              border: "1px solid",
+              borderColor: activeCategoryIndex === null ? "var(--accent-primary)" : "var(--border-subtle)",
+              boxShadow: activeCategoryIndex === null ? "0 4px 12px rgba(6, 182, 212, 0.3)" : "none",
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+          >
+            <span>{t.skills.filterAll}</span>
+          </button>
+
+          {data.skillCategories.map((cat, idx) => {
+            const isActive = activeCategoryIndex === idx;
+            return (
+              <button
+                key={cat.name}
+                type="button"
+                onClick={() => setActiveCategoryIndex(idx)}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  padding: "0.4rem clamp(0.65rem, 2vw, 1rem)",
+                  borderRadius: "var(--radius-full)",
+                  fontSize: "clamp(0.76rem, 2.2vw, 0.84rem)",
+                  fontWeight: 600,
+                  backgroundColor: isActive ? "var(--accent-primary)" : "var(--bg-card)",
+                  color: isActive ? "#ffffff" : "var(--text-secondary)",
+                  border: "1px solid",
+                  borderColor: isActive ? "var(--accent-primary)" : "var(--border-subtle)",
+                  boxShadow: isActive ? "0 4px 12px rgba(6, 182, 212, 0.3)" : "none",
+                  transition: "all 0.2s ease",
+                  cursor: "pointer",
+                }}
+              >
+                <span>{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Categorized Skills Grid - Square Boxes with Image on Top & Name at Bottom */}
@@ -183,60 +204,62 @@ export default function Skills() {
             margin: "0 auto",
           }}
         >
-          {displayedCategories.map((category) => (
-            <div
-              key={category.name}
-              className="glass-card"
-              style={{
-                padding: "clamp(1rem, 3vw, 1.5rem)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "1.1rem",
-              }}
-            >
-              {/* Category Card Header */}
+          {displayedCategories.map((category) => {
+            const categoryIndex = data.skillCategories.findIndex((c) => c.name === category.name);
+            return (
               <div
+                key={category.name}
+                className="glass-card"
                 style={{
+                  padding: "clamp(1rem, 3vw, 1.5rem)",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  paddingBottom: "0.75rem",
-                  borderBottom: "1px solid var(--border-subtle)",
+                  flexDirection: "column",
+                  gap: "1.1rem",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                  <div
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "8px",
-                      backgroundColor: "var(--bg-secondary)",
-                      border: "1px solid var(--border-subtle)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {categoryIcons[category.name]}
-                  </div>
-                  <h3 style={{ fontSize: "1.05rem", fontWeight: 700 }}>{category.name}</h3>
-                </div>
-
-                <span
+                {/* Category Card Header */}
+                <div
                   style={{
-                    fontSize: "0.72rem",
-                    padding: "0.15rem 0.5rem",
-                    borderRadius: "var(--radius-full)",
-                    backgroundColor: "var(--bg-secondary)",
-                    border: "1px solid var(--border-subtle)",
-                    color: "var(--text-muted)",
-                    fontFamily: "var(--font-mono)",
-                    fontWeight: 600,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingBottom: "0.75rem",
+                    borderBottom: "1px solid var(--border-subtle)",
                   }}
                 >
-                  {category.skills.length}
-                </span>
-              </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                    <div
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "8px",
+                        backgroundColor: "var(--bg-secondary)",
+                        border: "1px solid var(--border-subtle)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {categoryIcons[categoryIndex >= 0 ? categoryIndex : 0]}
+                    </div>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 700 }}>{category.name}</h3>
+                  </div>
+
+                  <span
+                    style={{
+                      fontSize: "0.72rem",
+                      padding: "0.15rem 0.5rem",
+                      borderRadius: "var(--radius-full)",
+                      backgroundColor: "var(--bg-secondary)",
+                      border: "1px solid var(--border-subtle)",
+                      color: "var(--text-muted)",
+                      fontFamily: "var(--font-mono)",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {category.skills.length}
+                  </span>
+                </div>
 
               {/* Square Boxes Grid */}
               <div
@@ -311,7 +334,8 @@ export default function Skills() {
                 ))}
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
 
       </div>

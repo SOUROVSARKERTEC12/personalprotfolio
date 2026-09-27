@@ -1,18 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { 
   Briefcase, 
   MapPin, 
   Calendar, 
-  CheckCircle2,
   ChevronRight,
   Sparkles
 } from "lucide-react";
-import { PORTFOLIO_DATA, ExperienceItem } from "@/data/portfolioData";
+import { ExperienceItem } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 export default function Experience() {
-  const experiences = PORTFOLIO_DATA.experiences;
+  const { language, t, data } = useLanguage();
+  const experiences = data.experiences;
   const [activeTab, setActiveTab] = useState<string>("all");
 
   const filteredExperiences = activeTab === "all" 
@@ -27,13 +28,13 @@ export default function Experience() {
         <div className="section-header">
           <span className="section-subtitle">
             <Briefcase size={16} />
-            Professional Journey
+            {t.experience.subtitle}
           </span>
           <h2 className="section-title">
-            Work Experience & <span className="gradient-text">Impact</span>
+            {t.experience.title} <span className="gradient-text">{t.experience.titleHighlight}</span>
           </h2>
           <p className="section-description">
-            Production engineering across high-traffic digital media and travel platforms, building scalable microservices and secure backend systems.
+            {t.experience.desc}
           </p>
         </div>
 
@@ -55,7 +56,7 @@ export default function Experience() {
               transition: "all 0.2s ease",
             }}
           >
-            All ({experiences.length})
+            {t.experience.filterAll} ({experiences.length})
           </button>
 
           {experiences.map((exp) => (
@@ -149,11 +150,11 @@ export default function Experience() {
                             width: "6px", 
                             height: "6px", 
                             borderRadius: "50%", 
-                            backgroundColor: "var(--accent-success)",
-                            boxShadow: "0 0 6px var(--accent-success)"
+                            backgroundColor: "var(--accent-success)", 
+                            boxShadow: "0 0 6px var(--accent-success)" 
                           }} 
                         />
-                        Current Position
+                        {language === "bn" ? "বর্তমান পদ" : "Current Position"}
                       </span>
                     )}
 
@@ -165,7 +166,7 @@ export default function Experience() {
                         fontSize: "0.72rem",
                       }}
                     >
-                      {exp.employmentType || "Full-Time"}
+                      {exp.employmentType || (language === "bn" ? "ফুল-টাইম" : "Full-Time")}
                     </span>
                   </div>
 
@@ -220,36 +221,39 @@ export default function Experience() {
                 </div>
               )}
 
-              {/* Responsibilities & Impact Bullet Points */}
-              {exp.bulletPoints && exp.bulletPoints.length > 0 && (
-                <div style={{ marginBottom: "1.25rem" }}>
-                  <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                    <ChevronRight size={16} style={{ color: "var(--accent-primary)" }} />
-                    <span>Key Contributions & Deliverables</span>
-                  </h4>
-                  <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.55rem" }}>
-                    {exp.bulletPoints.map((point, pIdx) => (
-                      <li key={pIdx} style={{ display: "flex", alignItems: "flex-start", gap: "0.6rem", fontSize: "0.9rem", color: "var(--text-secondary)", lineHeight: "1.55" }}>
-                        <CheckCircle2 size={15} style={{ color: "var(--accent-success)", marginTop: "0.2rem", flexShrink: 0 }} />
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Tech Stack Employed */}
-              <div style={{ paddingTop: "1.2rem", borderTop: "1px solid var(--border-subtle)" }}>
-                <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "var(--text-muted)", marginBottom: "0.6rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                  Technologies Used:
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
-                  {exp.technologies.map((tech) => (
-                    <span key={tech} className="badge-tech" style={{ padding: "0.3rem 0.65rem", borderRadius: "6px", fontSize: "0.78rem" }}>
-                      {tech}
+              {/* Detailed Bullet Points */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "1.5rem" }}>
+                {exp.bulletPoints.map((point: string, ptIdx: number) => (
+                  <div key={ptIdx} style={{ display: "flex", alignItems: "flex-start", gap: "0.65rem" }}>
+                    <ChevronRight size={17} style={{ color: "var(--accent-primary)", marginTop: "2px", flexShrink: 0 }} />
+                    <span style={{ fontSize: "0.92rem", color: "var(--text-primary)", lineHeight: "1.55" }}>
+                      {point}
                     </span>
-                  ))}
-                </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Technologies Tags */}
+              <div style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: "1rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+                <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginRight: "0.25rem", fontWeight: 600 }}>
+                  {language === "bn" ? "প্রযুক্তি:" : "Stack:"}
+                </span>
+                {exp.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    style={{
+                      fontSize: "0.78rem",
+                      backgroundColor: "var(--bg-secondary)",
+                      border: "1px solid var(--border-subtle)",
+                      color: "var(--accent-primary)",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "6px",
+                      fontFamily: "var(--font-mono)",
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
 
             </div>

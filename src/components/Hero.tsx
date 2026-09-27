@@ -11,7 +11,7 @@ import {
   Check
 } from "lucide-react";
 import { Github, Linkedin, StackOverflow } from "@/components/Icons";
-import { PORTFOLIO_DATA } from "@/data/portfolioData";
+import { useLanguage } from "@/data/translations";
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -19,72 +19,73 @@ interface HeroProps {
 
 type EndpointKey = "developer" | "auth" | "health";
 
-const MOCK_ENDPOINTS: Record<EndpointKey, {
-  method: "GET" | "POST";
-  url: string;
-  payload?: object;
-  response: object;
-  status: number;
-  time: string;
-}> = {
-  developer: {
-    method: "GET",
-    url: "/api/v1/developer/sourov",
-    response: {
-      name: "Sourov Sarkar",
-      role: "Backend Developer",
-      currentCompany: "Dhaka Post",
-      location: "Dhaka, Bangladesh",
-      specialization: ["NestJS", "Node.js", "TypeScript", "PostgreSQL", "Redis", "Microservices"],
-      architecture: "Clean Architecture & Modular Microservices",
-      availability: "Senior & High-Impact Backend Roles",
-      status: "Active 🟢",
-    },
-    status: 200,
-    time: "14ms",
-  },
-  auth: {
-    method: "POST",
-    url: "/api/v1/auth/mfa/verify",
-    payload: {
-      userId: "usr_flyfar_882",
-      provider: "GoogleAuthenticator",
-      token: "849201",
-    },
-    response: {
-      authenticated: true,
-      tokenType: "Bearer",
-      accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI...",
-      roles: ["BackendEngineer", "Admin"],
-      mfaVerified: true,
-      expiresIn: "3600s",
-    },
-    status: 201,
-    time: "24ms",
-  },
-  health: {
-    method: "GET",
-    url: "/system/metrics/health",
-    response: {
-      service: "sourov-backend-cluster",
-      status: "HEALTHY",
-      uptime: "99.98%",
-      databasePools: {
-        postgres: "connected (5/20 active)",
-        redisCache: "online (latency: 1.2ms)",
-        mongoCluster: "replicaset synced"
-      },
-      memoryUsage: "142MB / 512MB",
-    },
-    status: 200,
-    time: "8ms",
-  },
-};
-
 export default function Hero({ onOpenResume }: HeroProps) {
   const [selectedEndpoint, setSelectedEndpoint] = useState<EndpointKey>("developer");
   const [isRunning, setIsRunning] = useState(false);
   const [copiedCurl, setCopiedCurl] = useState(false);
+  const { language: currentLanguage, t, data } = useLanguage();
+
+  const MOCK_ENDPOINTS: Record<EndpointKey, {
+    method: "GET" | "POST";
+    url: string;
+    payload?: object;
+    response: object;
+    status: number;
+    time: string;
+  }> = {
+    developer: {
+      method: "GET",
+      url: "/api/v1/developer/sourov",
+      response: {
+        name: currentLanguage === "bn" ? "সৌরভ সরকার" : "Sourov Sarkar",
+        role: currentLanguage === "bn" ? "ব্যাকএন্ড ডেভেলপার" : "Backend Developer",
+        currentCompany: currentLanguage === "bn" ? "ঢাকা পোস্ট" : "Dhaka Post",
+        location: currentLanguage === "bn" ? "ঢাকা, বাংলাদেশ" : "Dhaka, Bangladesh",
+        specialization: ["NestJS", "Node.js", "TypeScript", "PostgreSQL", "Redis", "Microservices"],
+        architecture: currentLanguage === "bn" ? "ক্লিন আর্কিটেকচার ও মডুলার মাইক্রোসার্ভিস" : "Clean Architecture & Modular Microservices",
+        availability: currentLanguage === "bn" ? "সিনিয়র ব্যাকএন্ড ইঞ্জিনিয়ার রোল" : "Senior & High-Impact Backend Roles",
+        status: currentLanguage === "bn" ? "সক্রিয় 🟢" : "Active 🟢",
+      },
+      status: 200,
+      time: "14ms",
+    },
+    auth: {
+      method: "POST",
+      url: "/api/v1/auth/mfa/verify",
+      payload: {
+        userId: "usr_flyfar_882",
+        provider: "GoogleAuthenticator",
+        token: "849201",
+      },
+      response: {
+        authenticated: true,
+        tokenType: "Bearer",
+        accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI...",
+        roles: ["BackendEngineer", "Admin"],
+        mfaVerified: true,
+        expiresIn: "3600s",
+      },
+      status: 201,
+      time: "24ms",
+    },
+    health: {
+      method: "GET",
+      url: "/system/metrics/health",
+      response: {
+        service: "sourov-backend-cluster",
+        status: "HEALTHY",
+        uptime: "99.98%",
+        databasePools: {
+          postgres: "connected (5/20 active)",
+          redisCache: "online (latency: 1.2ms)",
+          mongoCluster: "replicaset synced"
+        },
+        memoryUsage: "142MB / 512MB",
+      },
+      status: 200,
+      time: "8ms",
+    },
+  };
 
   const currentEndpoint = MOCK_ENDPOINTS[selectedEndpoint];
 
@@ -154,9 +155,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   fontSize: "0.82rem",
                   fontWeight: 600,
                   letterSpacing: "0.04em",
-                  textTransform: "uppercase",
+                  textTransform: currentLanguage === "bn" ? "none" : "uppercase",
                   marginBottom: "1rem",
-                  fontFamily: "var(--font-mono)",
+                  fontFamily: currentLanguage === "bn" ? "var(--font-bangla)" : "var(--font-mono)",
                   width: "fit-content",
                 }}
               >
@@ -171,7 +172,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   }}
                   className="animate-pulse-glow"
                 />
-                <span>Backend Developer &amp; API Architect</span>
+                <span>{t.hero.badge}</span>
               </div>
 
               {/* Main H1 Hero Name */}
@@ -194,7 +195,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                     marginBottom: "0.25rem",
                   }}
                 >
-                  Hi there, I&apos;m{" "}
+                  {t.hero.greeting}{" "}
                   <span
                     style={{
                       display: "inline-block",
@@ -221,9 +222,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   marginBottom: "1.2rem",
                 }}
               >
-                Engineering Scalable, High-Performance{" "}
+                {t.hero.headlinePrefix}{" "}
                 <span style={{ color: "var(--text-primary)", fontWeight: 800 }}>
-                  Backend Systems
+                  {t.hero.headlineHighlight}
                 </span>
               </h2>
 
@@ -235,20 +236,20 @@ export default function Hero({ onOpenResume }: HeroProps) {
                   maxWidth: "580px",
                 }}
               >
-                {PORTFOLIO_DATA.personal.bio}
+                {data.personal.bio}
               </p>
             </div>
 
             {/* Call to Actions */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", paddingTop: "0.5rem" }}>
               <a href="#projects" className="btn-primary" id="hero-projects-btn">
-                <span>View Projects</span>
+                <span>{t.hero.projectsBtn}</span>
                 <ArrowRight size={17} />
               </a>
 
               <a href="#contact" className="btn-secondary" id="hero-contact-btn">
                 <Mail size={17} />
-                <span>Contact Me</span>
+                <span>{t.hero.contactBtn}</span>
               </a>
 
               <button
@@ -259,16 +260,16 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 style={{ borderStyle: "dashed" }}
               >
                 <Download size={17} />
-                <span>Resume PDF</span>
+                <span>{t.hero.resumeBtn}</span>
               </button>
             </div>
 
             {/* Social Links & Trust Indicators */}
             <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", paddingTop: "0.8rem" }}>
-              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>Find me on:</span>
+              <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>{t.hero.findMeOn}</span>
               <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <a
-                  href={PORTFOLIO_DATA.personal.github}
+                  href={data.personal.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub Profile"
@@ -296,7 +297,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 </a>
 
                 <a
-                  href={PORTFOLIO_DATA.personal.linkedin}
+                  href={data.personal.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn Profile"
@@ -324,7 +325,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 </a>
 
                 <a
-                  href={PORTFOLIO_DATA.personal.stackoverflow}
+                  href={data.personal.stackoverflow}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Stack Overflow Profile"
@@ -414,7 +415,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
                     }}
                   >
                     {copiedCurl ? <Check size={12} /> : <Copy size={12} />}
-                    <span className="terminal-action-text">{copiedCurl ? "Copied" : "cURL"}</span>
+                    <span className="terminal-action-text">
+                      {copiedCurl ? (currentLanguage === "bn" ? "কপি হয়েছে" : "Copied") : "cURL"}
+                    </span>
                   </button>
 
                   <button
@@ -434,7 +437,11 @@ export default function Hero({ onOpenResume }: HeroProps) {
                     }}
                   >
                     {isRunning ? <RotateCw size={12} className="animate-spin" /> : <Play size={12} fill="#fff" />}
-                    <span>{isRunning ? "Running" : "Execute"}</span>
+                    <span>
+                      {isRunning
+                        ? (currentLanguage === "bn" ? "চলছে..." : "Running")
+                        : (currentLanguage === "bn" ? "রান করুন" : "Execute")}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -535,7 +542,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 {/* Optional Request Payload preview for POST */}
                 {currentEndpoint.payload && (
                   <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "0.2rem", flexShrink: 0, minWidth: 0 }}>
-                    <span style={{ color: "var(--accent-warning)" }}>{"// Request Body (Payload):"}</span>
+                    <span style={{ color: "var(--accent-warning)" }}>
+                      {currentLanguage === "bn" ? "// রিকোয়েস্ট বডি (পেলোড):" : "// Request Body (Payload):"}
+                    </span>
                     <pre style={{ color: "var(--text-secondary)", marginTop: "0.25rem", fontSize: "0.76rem", lineHeight: "1.5", overflowX: "auto", maxWidth: "100%", minWidth: 0 }}>
                       <code style={{ display: "block", minWidth: 0 }}>{JSON.stringify(currentEndpoint.payload, null, 2)}</code>
                     </pre>
@@ -545,7 +554,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 {/* Response Output */}
                 <div style={{ marginTop: "0.2rem", minWidth: 0, width: "100%", overflow: "hidden" }}>
                   <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginBottom: "0.4rem" }}>
-                    <span style={{ color: "var(--terminal-green)" }}>{"// Server Response:"}</span>
+                    <span style={{ color: "var(--terminal-green)" }}>
+                      {currentLanguage === "bn" ? "// সার্ভার রেসপন্স:" : "// Server Response:"}
+                    </span>
                   </div>
                   <pre
                     style={{
