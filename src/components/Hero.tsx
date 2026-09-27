@@ -140,21 +140,93 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
             {/* Main Headline */}
             <div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 600, color: "var(--accent-primary)", marginBottom: "0.5rem", letterSpacing: "0.02em" }}>
-                Hi, I&apos;m Sourov Sarkar 👋
+              {/* Eyebrow Status Badge */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.55rem",
+                  padding: "0.4rem 0.95rem",
+                  borderRadius: "9999px",
+                  background: "rgba(6, 182, 212, 0.08)",
+                  border: "1px solid rgba(6, 182, 212, 0.28)",
+                  color: "var(--accent-primary)",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                  textTransform: "uppercase",
+                  marginBottom: "1rem",
+                  fontFamily: "var(--font-mono)",
+                  width: "fit-content",
+                }}
+              >
+                <span
+                  style={{
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    backgroundColor: "var(--accent-primary)",
+                    boxShadow: "0 0 10px var(--accent-primary)",
+                    display: "inline-block",
+                  }}
+                  className="animate-pulse-glow"
+                />
+                <span>Backend Developer &amp; API Architect</span>
               </div>
+
+              {/* Main H1 Hero Name */}
               <h1
                 style={{
-                  fontSize: "clamp(1.85rem, 5vw, 3.8rem)",
-                  fontWeight: 800,
-                  lineHeight: 1.15,
-                  letterSpacing: "-0.035em",
-                  marginBottom: "1rem",
+                  fontSize: "clamp(2.6rem, 6.5vw, 4.6rem)",
+                  fontWeight: 900,
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.04em",
+                  marginBottom: "0.9rem",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "clamp(1.1rem, 2.5vw, 1.45rem)",
+                    fontWeight: 600,
+                    color: "var(--text-secondary)",
+                    letterSpacing: "-0.01em",
+                    display: "block",
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  Hi there, I&apos;m{" "}
+                  <span
+                    style={{
+                      display: "inline-block",
+                      transformOrigin: "70% 70%",
+                    }}
+                    className="animate-float"
+                  >
+                    👋
+                  </span>
+                </span>
+                <span className="hero-name-highlight">
+                  <span className="gradient-text">Sourov Sarkar</span>
+                </span>
+              </h1>
+
+              {/* Core Discipline Subheading */}
+              <h2
+                style={{
+                  fontSize: "clamp(1.2rem, 2.8vw, 1.85rem)",
+                  fontWeight: 700,
+                  lineHeight: 1.3,
+                  color: "var(--text-secondary)",
+                  letterSpacing: "-0.02em",
+                  marginBottom: "1.2rem",
                 }}
               >
                 Engineering Scalable, High-Performance{" "}
-                <span className="gradient-text">Backend Systems</span>
-              </h1>
+                <span style={{ color: "var(--text-primary)", fontWeight: 800 }}>
+                  Backend Systems
+                </span>
+              </h2>
+
               <p
                 style={{
                   fontSize: "1.12rem",

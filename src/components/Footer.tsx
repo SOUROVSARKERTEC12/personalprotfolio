@@ -27,7 +27,10 @@ export default function Footer() {
           >
             <Terminal size={17} />
           </div>
-          <span style={{ fontSize: "1.2rem", fontWeight: 800 }}>Sourov.dev</span>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+            <span style={{ fontSize: "1.2rem", fontWeight: 800 }}>Sourov</span>
+            <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--accent-primary)" }}>Praxis</span>
+          </div>
         </div>
 
         {/* Copyright */}

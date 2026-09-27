@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useSyncExternalStore } from "react";
-import { Terminal, Download, Palette, Menu, X, Check, FileText, Sparkles } from "lucide-react";
+import { Terminal, Download, Palette, Menu, X, Check, FileText, Sparkles, BookOpen, Zap } from "lucide-react";
 
 interface NavbarProps {
   onOpenResume: () => void;
@@ -75,13 +75,19 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
   const [showCursorPicker, setShowCursorPicker] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [praxisTooltipOpen, setPraxisTooltipOpen] = useState(false);
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest("#theme-switcher-container") && !target.closest("#cursor-effect-container")) {
+      if (
+        !target.closest("#theme-switcher-container") &&
+        !target.closest("#cursor-effect-container") &&
+        !target.closest(".praxis-badge-trigger")
+      ) {
         setShowThemePicker(false);
         setShowCursorPicker(false);
+        setPraxisTooltipOpen(false);
       }
     };
 
@@ -198,9 +204,134 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
               <Terminal size={20} strokeWidth={2.4} />
             </div>
             <div>
-              <div style={{ fontWeight: 800, fontSize: "1.1rem", letterSpacing: "-0.02em", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+              <div
+                style={{
+                  fontWeight: 800,
+                  fontSize: "1.1rem",
+                  letterSpacing: "-0.02em",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  position: "relative",
+                }}
+              >
                 <span>Sourov</span>
-                <span style={{ color: "var(--accent-primary)" }}>.dev</span>
+                <span
+                  className={`praxis-badge-trigger ${praxisTooltipOpen ? "active" : ""}`}
+                  onMouseEnter={() => setPraxisTooltipOpen(true)}
+                  onMouseLeave={() => setPraxisTooltipOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setPraxisTooltipOpen((prev) => !prev);
+                  }}
+                  title="Praxis (Πρᾶξις) - Hover to view philosophical meaning"
+                >
+                  <span className="praxis-text">Praxis</span>
+                  <span className="praxis-indicator" aria-hidden="true">✦</span>
+
+                  {/* Philosophical Tooltip Popover */}
+                  <div
+                    className="praxis-popover-card"
+                    onClick={(e) => e.stopPropagation()}
+                    role="tooltip"
+                  >
+                    <div className="praxis-popover-arrow" />
+                    
+                    {/* Header: Greek Philosophy badge */}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginBottom: "0.65rem",
+                        paddingBottom: "0.5rem",
+                        borderBottom: "1px solid var(--border-subtle)",
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          fontSize: "0.72rem",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                          color: "var(--accent-primary)",
+                          fontFamily: "var(--font-mono)",
+                        }}
+                      >
+                        <BookOpen size={13} /> Greek Philosophy
+                      </span>
+                      <span
+                        style={{
+                          fontSize: "0.82rem",
+                          color: "var(--text-primary)",
+                          fontFamily: "var(--font-mono)",
+                          fontWeight: 700,
+                          letterSpacing: "0.05em",
+                        }}
+                      >
+                        Πρᾶξις
+                      </span>
+                    </div>
+
+                    {/* Word title & pronunciation */}
+                    <div style={{ display: "flex", alignItems: "baseline", gap: "0.6rem", marginBottom: "0.55rem" }}>
+                      <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.01em" }}>
+                        Praxis
+                      </span>
+                      <span style={{ fontSize: "0.8rem", color: "var(--accent-primary)", fontWeight: 600 }}>
+                        /ˈpræk.sɪs/ • noun
+                      </span>
+                    </div>
+
+                    {/* Philosophical definition */}
+                    <p
+                      style={{
+                        margin: "0 0 0.85rem 0",
+                        fontSize: "0.88rem",
+                        color: "var(--text-primary)",
+                        lineHeight: "1.6",
+                        fontWeight: 450,
+                      }}
+                    >
+                      &ldquo;The practice of translating abstract philosophical theory, logic, and first principles into living, tangible action.&rdquo;
+                    </p>
+
+                    {/* Backend Engineering application */}
+                    <div
+                      style={{
+                        background: "var(--bg-tertiary)",
+                        border: "1px solid var(--border-subtle)",
+                        borderLeft: "3.5px solid var(--accent-primary)",
+                        borderRadius: "0 8px 8px 0",
+                        padding: "0.65rem 0.75rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.35rem",
+                          fontWeight: 700,
+                          fontSize: "0.76rem",
+                          color: "var(--accent-primary)",
+                          marginBottom: "0.25rem",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.06em",
+                        }}
+                      >
+                        <Zap size={13} />
+                        <span>In Backend Engineering</span>
+                      </div>
+                      <div style={{ fontSize: "0.82rem", color: "var(--text-primary)", lineHeight: "1.55", fontWeight: 400 }}>
+                        Transforming distributed systems theory into resilient, high-throughput production infrastructure.
+                      </div>
+                    </div>
+                  </div>
+                </span>
               </div>
               <div className="nav-brand-subtitle" style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)", marginTop: "-2px" }}>
                 Backend Engineer
