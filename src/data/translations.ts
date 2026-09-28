@@ -254,6 +254,7 @@ export const TRANSLATIONS = {
       contact: 'Contact',
       resume: 'Resume',
       subtitle: 'Backend Engineer',
+      availableStatus: 'Available for backend opportunities',
     },
     clock: {
       title: 'Live System Clock',
@@ -269,7 +270,6 @@ export const TRANSLATIONS = {
       engineeringDesc: 'Transforming distributed systems theory into resilient, high-throughput production infrastructure.',
     },
     hero: {
-      badge: 'Backend Developer & API Architect',
       greeting: "Hi there, I'm",
       headlinePrefix: 'Engineering Scalable, High-Performance',
       headlineHighlight: 'Backend Systems',
@@ -403,6 +403,7 @@ export const TRANSLATIONS = {
       contact: 'যোগাযোগ',
       resume: 'জীবনবৃত্তান্ত',
       subtitle: 'ব্যাকএন্ড ইঞ্জিনিয়ার',
+      availableStatus: 'নতুন সুযোগের জন্য প্রস্তুত',
     },
     clock: {
       title: 'লাইভ সিস্টেম সময়',
@@ -418,7 +419,6 @@ export const TRANSLATIONS = {
       engineeringDesc: 'কম্পিউটার সায়েন্সের জটিল সিস্টেম তত্ত্বকে স্থিতিস্থাপক ও উচ্চ-ক্ষমতাসম্পন্ন প্রোডাকশন অবকাঠামোতে রূপান্তর।',
     },
     hero: {
-      badge: 'ব্যাকএন্ড ডেভেলপার ও এপিআই আর্কিটেক্ট',
       greeting: 'হ্যালো, আমি',
       headlinePrefix: 'স্কেলেবল ও উচ্চ-ক্ষমতাসম্পন্ন',
       headlineHighlight: 'ব্যাকএন্ড সিস্টেম আর্কিটেকচার',

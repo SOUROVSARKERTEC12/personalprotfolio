@@ -1112,7 +1112,7 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
                   boxShadow: "0 0 10px var(--accent-success)",
                 }}
               />
-              <span>{t.hero.badge}</span>
+              <span>{t.nav.availableStatus}</span>
             </div>
 
             <button

@@ -112,68 +112,9 @@ export default function Hero({ onOpenResume }: HeroProps) {
           {/* Left Column: Introduction & Pitch */}
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem", minWidth: 0 }}>
 
-            {/* Status Pill */}
-            {/* <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.8rem" }}>
-              <div
-                className="badge"
-                style={{
-                  background: "rgba(16, 185, 129, 0.12)",
-                  borderColor: "rgba(16, 185, 129, 0.35)",
-                  color: "var(--accent-success)",
-                  fontSize: "0.82rem",
-                  padding: "0.35rem 0.9rem",
-                }}
-              >
-                <span
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    backgroundColor: "var(--accent-success)",
-                    boxShadow: "0 0 10px var(--accent-success)",
-                    display: "inline-block",
-                  }}
-                  className="animate-pulse-glow"
-                />
-                <span>Available for Backend Roles</span>
-              </div>
-            </div> */}
-
             {/* Main Headline */}
             <div>
-              {/* Eyebrow Status Badge */}
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.55rem",
-                  padding: "0.4rem 0.95rem",
-                  borderRadius: "9999px",
-                  background: "rgba(6, 182, 212, 0.08)",
-                  border: "1px solid rgba(6, 182, 212, 0.28)",
-                  color: "var(--accent-primary)",
-                  fontSize: "0.82rem",
-                  fontWeight: 600,
-                  letterSpacing: "0.04em",
-                  textTransform: currentLanguage === "bn" ? "none" : "uppercase",
-                  marginBottom: "1rem",
-                  fontFamily: currentLanguage === "bn" ? "var(--font-bangla)" : "var(--font-mono)",
-                  width: "fit-content",
-                }}
-              >
-                <span
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    backgroundColor: "var(--accent-primary)",
-                    boxShadow: "0 0 10px var(--accent-primary)",
-                    display: "inline-block",
-                  }}
-                  className="animate-pulse-glow"
-                />
-                <span>{t.hero.badge}</span>
-              </div>
+
 
               {/* Main H1 Hero Name */}
               <h1

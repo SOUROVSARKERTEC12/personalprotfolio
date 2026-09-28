@@ -23,7 +23,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Sourov Sarkar | Backend Developer & API Architect",
+  title: "Sourov Sarkar | Backend Developer",
   description:
     "Portfolio of Sourov Sarkar, Backend Developer specialized in Node.js, Express.js, NestJS, TypeScript, PostgreSQL, and scalable microservice architectures.",
   keywords: [
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://sourov-sarkar.dev",
-    title: "Sourov Sarkar | Backend Developer & API Architect",
+    title: "Sourov Sarkar | Backend Developer",
     description:
       "Passionate Backend Developer designing high-performance, scalable and reliable backend ecosystems using Node.js, NestJS, Express, and modern databases.",
     siteName: "Sourov Sarkar Portfolio",
