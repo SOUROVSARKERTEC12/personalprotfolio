@@ -56,7 +56,7 @@ export const PORTFOLIO_DATA = {
     role: "Backend Developer",
     secondaryTitle: "Scalable Systems & API Architect",
     avatar: "/avatar.png",
-    resumePdf: "/sourov-sarkar-resume.pdf",
+    resumePdf: "https://drive.google.com/file/d/1hP9cqbKWffJrOxoe5Q26rMhLunPF5IFo/view",
     location: "Dhaka, Bangladesh",
     email: "sourovsarker005@gmail.com",
     phone: "+8801728326959",

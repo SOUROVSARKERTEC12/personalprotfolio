@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { 
   Mail, 
   Phone, 
@@ -28,17 +29,36 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      subject: formData.subject,
+      message: formData.message,
+      to_name: data.personal.name,
+    };
+
+    emailjs.send(
+      'service_o53dtnv',
+      'template_hau7cja',
+      templateParams,
+      'afddBdpXUVOhOlJsw'
+    )
+    .then((response) => {
+      console.log('SUCCESS!', response.status, response.text);
       setLoading(false);
       setFormSubmitted(true);
-      // Construct mailto link fallback
+    })
+    .catch((err) => {
+      console.log('FAILED...', err);
+      setLoading(false);
+      // Fallback to mailto link if emailjs fails
       const mailtoUrl = `mailto:${data.personal.email}?subject=${encodeURIComponent(
         formData.subject || `Inquiry from ${formData.name}`
       )}&body=${encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
       )}`;
       window.open(mailtoUrl, "_blank");
-    }, 600);
+    });
   };
 
   return (

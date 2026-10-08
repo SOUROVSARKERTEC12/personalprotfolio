@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
 import { X, Download, ExternalLink, FileText } from "lucide-react";
 import { useLanguage } from "@/data/translations";
 
@@ -90,8 +88,9 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}>
             <a
-              href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
-              download="Sourov_Sarkar_Backend_Developer_Resume.pdf"
+              href={data.personal.resumePdf}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-primary"
               style={{
                 padding: "0.45rem 0.85rem",
@@ -146,12 +145,13 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               overflow: "hidden",
             }}
           >
-            <Image
-              src="/sourov-sarkar-resume.pdf.png"
-              alt="Sourov Sarkar Resume Document"
-              width={680}
-              height={962}
-              style={{ width: "100%", height: "auto", display: "block" }}
+            <iframe
+              src={data.personal.resumePdf.replace('/view', '/preview')}
+              title="Sourov Sarkar Resume Document"
+              width="100%"
+              height="962px"
+              style={{ border: 'none', display: "block", backgroundColor: "white" }}
+              allow="autoplay"
             />
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
         >
           <span>{t.contact.directEmail}: {data.personal.email}</span>
           <a
-            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/sourov-sarkar-resume.pdf`}
+            href={data.personal.resumePdf}
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--accent-primary)", display: "flex", alignItems: "center", gap: "0.3rem" }}

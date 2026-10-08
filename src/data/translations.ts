@@ -22,7 +22,7 @@ export const PORTFOLIO_DATA_BN = {
     role: "ব্যাকএন্ড ডেভেলপার",
     secondaryTitle: "স্কেলেবল সিস্টেমস ও এপিআই আর্কিটেক্ট",
     avatar: "/avatar.png",
-    resumePdf: "/sourov-sarkar-resume.pdf",
+    resumePdf: "https://drive.google.com/file/d/1hP9cqbKWffJrOxoe5Q26rMhLunPF5IFo/view",
     location: "ঢাকা, বাংলাদেশ",
     email: "sourovsarker005@gmail.com",
     phone: "+8801728326959",
