@@ -1,0 +1,42 @@
+.floating-game-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 999;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 255, 204, 0.2);
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  user-select: none;
+  touch-action: none; /* Prevents scrolling while dragging on touch devices */
+  cursor: grab;
+}
+
+.floating-game-icon:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.6), inset 0 0 15px rgba(0, 255, 204, 0.4);
+  background: rgba(20, 20, 30, 0.9);
+  color: #00ffcc;
+}
+
+.floating-game-icon.dragging {
+  cursor: grabbing;
+  transition: none; /* Disable transition during drag for immediate follow */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 255, 204, 0.5);
+}
+
+.floating-game-icon svg {
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.floating-game-icon:hover svg {
+  transform: scale(1.1);
+}

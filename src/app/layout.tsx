@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CursorController from "@/components/CursorController";
+import FloatingGameIcon from "@/components/FloatingGameIcon";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -108,6 +109,7 @@ export default function RootLayout({
       <body>
         <CursorController />
         {children}
+        <FloatingGameIcon />
       </body>
     </html>
   );
